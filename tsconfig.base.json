@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "baseUrl": ".",
+    "paths": {
+      "@ng-agent/protocol": ["packages/protocol/src/index.ts"],
+      "@ng-agent/core": ["packages/core/src/index.ts"],
+      "@ng-agent/runtime": ["packages/runtime/src/index.ts"],
+      "@ng-agent/angular": ["packages/angular/src/index.ts"],
+      "@ng-agent/browser": ["packages/browser/src/index.ts"],
+      "@ng-agent/plugin-api": ["packages/plugin-api/src/index.ts"],
+      "@ng-agent/adapter-components": ["packages/adapters/components/src/index.ts"],
+      "@ng-agent/adapter-router": ["packages/adapters/router/src/index.ts"],
+      "@ng-agent/adapter-di": ["packages/adapters/di/src/index.ts"],
+      "@ng-agent/adapter-signals": ["packages/adapters/signals/src/index.ts"],
+      "@ng-agent/adapter-forms": ["packages/adapters/forms/src/index.ts"],
+      "@ng-agent/adapter-signal-forms": ["packages/adapters/signal-forms/src/index.ts"],
+      "@ng-agent/adapter-ngrx-store": ["packages/adapters/ngrx-store/src/index.ts"],
+      "@ng-agent/adapter-ngrx-signal-store": ["packages/adapters/ngrx-signal-store/src/index.ts"],
+      "@ng-agent/adapter-profiler": ["packages/adapters/profiler/src/index.ts"]
+    },
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}

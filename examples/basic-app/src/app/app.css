@@ -1,0 +1,4 @@
+main { max-width: 42rem; margin: 4rem auto; font: 16px/1.5 system-ui, sans-serif; }
+form { display: grid; gap: 1rem; }
+label { display: grid; gap: .25rem; }
+input, button { font: inherit; padding: .6rem; }

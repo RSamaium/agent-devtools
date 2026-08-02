@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+.ng-agent/
+*.tsbuildinfo
+playwright-report/
+test-results/
+.DS_Store

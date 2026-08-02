@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspect Angular Apps"
+  short_description: "Inspect Angular runtime state with ng-agent"
+  default_prompt: "Use $inspecting-angular-apps to inspect this Angular application and explain the relevant runtime evidence."

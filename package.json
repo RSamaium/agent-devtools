@@ -1,0 +1,38 @@
+{
+  "name": "ng-agent-devtools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent-first Angular runtime inspection platform",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RSamaium/ng-agent.git"
+  },
+  "homepage": "https://github.com/RSamaium/ng-agent#readme",
+  "bugs": "https://github.com/RSamaium/ng-agent/issues",
+  "type": "module",
+  "packageManager": "pnpm@11.16.0",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "clean": "pnpm -r --if-present clean",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm test:packages && pnpm test:examples",
+    "test:packages": "vitest run",
+    "test:examples": "pnpm --filter './examples/*' test",
+    "test:browsers": "node scripts/browser-smoke.mjs",
+    "test:watch": "vitest",
+    "lint": "eslint packages",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@types/node": "^22.17.0",
+    "eslint": "^9.32.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0",
+    "vitest": "^3.2.4"
+  }
+}

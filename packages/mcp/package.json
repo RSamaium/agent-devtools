@@ -1,0 +1,7 @@
+{
+  "name": "@ng-agent/mcp", "version": "0.1.0", "description": "MCP server for Angular runtime inspection", "type": "module",
+  "bin": { "ng-agent-mcp": "./dist/bin.js" }, "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }, "files": ["dist"],
+  "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
+  "dependencies": { "@modelcontextprotocol/sdk": "^1.17.1", "@ng-agent/browser": "workspace:^", "@ng-agent/core": "workspace:^", "@ng-agent/protocol": "workspace:^", "zod": "catalog:" },
+  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "publishConfig": { "access": "public" }, "license": "MIT", "engines": { "node": ">=20.19.0" }
+}
