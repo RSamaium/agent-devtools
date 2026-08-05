@@ -1,18 +1,17 @@
 {
-  "name": "@ng-agent/runtime",
+  "name": "@agent-devtools/runtime",
   "version": "0.1.0",
-  "description": "Main-world Angular runtime bridge for ng-agent",
+  "description": "Framework-neutral in-page ADP runtime and adapter host",
   "type": "module",
   "sideEffects": false,
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }, "./browser-script": "./dist/browser/browser-entry.global.js" },
   "files": ["dist"],
   "scripts": { "prepack": "pnpm build",
-    "build": "tsup src/index.ts --format esm --dts --clean && tsup src/browser-entry.ts --format iife --global-name NgAgentRuntime --out-dir dist/browser --minify",
+    "build": "tsup src/index.ts --format esm --dts --clean && tsup src/browser-entry.ts --format iife --global-name AgentDevToolsRuntime --out-dir dist/browser --minify",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "dependencies": { "@ng-agent/protocol": "workspace:^" },
+  "dependencies": { "@agent-devtools/protocol": "workspace:^" },
   "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:", "vitest": "^3.2.4" },
-  "publishConfig": { "access": "public" },
   "license": "MIT"
 }

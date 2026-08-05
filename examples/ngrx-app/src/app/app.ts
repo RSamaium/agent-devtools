@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Store, createAction, createReducer, on } from '@ngrx/store';
-import { instrumentStore, recordNgAgentEvent } from '@ng-agent/angular';
+import { instrumentStore, recordAgentDevtoolsEvent } from '@agent-devtools/angular';
 
 export interface AppState { counter: number }
 export const increment = createAction('[Counter] Increment');
@@ -13,6 +13,6 @@ export class App {
   private readonly unregisterStore = instrumentStore('AppStore', this.store, 'ngrx', { state: () => ({ counter: this.count() }) });
   protected increment(): void {
     const action = increment(); this.store.dispatch(action);
-    recordNgAgentEvent({ type: 'ngrx-action', source: 'AppStore', value: action });
+    recordAgentDevtoolsEvent({ type: 'ngrx-action', source: 'AppStore', value: action });
   }
 }

@@ -1,2 +1,2 @@
 import { installRuntimeBridge } from './engine.js';
-if (typeof window !== 'undefined' && !window.__NG_AGENT__) installRuntimeBridge(window);
+if (typeof window !== 'undefined' && !window.__AGENT_DEVTOOLS__) installRuntimeBridge(window);

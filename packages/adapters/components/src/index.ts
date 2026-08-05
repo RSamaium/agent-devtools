@@ -1,5 +1,6 @@
-import type { RuntimeAdapter, RuntimeContext } from '@ng-agent/runtime';
-import type { PropertySnapshot, Snapshot } from '@ng-agent/protocol';
+import type { CaptureAdapter, RuntimeContext } from '@agent-devtools/runtime';
+import type { PropertySnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+export { AngularDiscoveryAdapter } from './discovery.js';
 
 interface Definition { onPush?: boolean; inputs?: Record<string, unknown>; outputs?: Record<string, unknown> }
 interface AngularDebugApi { getComponent?(element: Element): object | null; getDirectives?(element: Element): object[] }
@@ -13,10 +14,10 @@ const classify = (properties: PropertySnapshot[], definition: Definition | undef
   }
 };
 
-export class ComponentsAdapter implements RuntimeAdapter {
+export class ComponentsAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'components'; readonly priority = 10;
   isAvailable(context: RuntimeContext) { return !!(context.window as unknown as { ng?: unknown }).ng; }
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const api = (context.window as unknown as { ng?: AngularDebugApi }).ng;
     const components = new Map<string, object>(); const directives = new Map<string, object>();
     for (const element of context.document.querySelectorAll('*')) {

@@ -1,6 +1,5 @@
-import type { ComponentSnapshot, DirectiveSnapshot, PropertySnapshot, SignalSnapshot, Snapshot } from '@ng-agent/protocol';
-import type { RuntimeAdapter, RuntimeContext } from './adapter.js';
-import { serialize } from './serializer.js';
+import type { ComponentSnapshot, DirectiveSnapshot, PropertySnapshot, SignalSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
 
 interface AngularDebugApi {
   getComponent?(element: Element): object | null;
@@ -8,11 +7,15 @@ interface AngularDebugApi {
   getInjector?(element: Element): object | null;
 }
 
-const publicProperties = (instance: object, context: RuntimeContext, snapshot: Snapshot): PropertySnapshot[] => {
+const publicProperties = (instance: object, context: RuntimeContext, snapshot: StandardCaptureSnapshot): PropertySnapshot[] => {
   const properties: PropertySnapshot[] = [];
   for (const name of Object.keys(instance).filter(name => !name.startsWith('_')).slice(0, 100)) {
     let current: unknown;
-    try { const descriptor = Object.getOwnPropertyDescriptor(instance, name); if (descriptor?.get) continue; current = descriptor && 'value' in descriptor ? descriptor.value : undefined; } catch { continue; }
+    try {
+      const descriptor = Object.getOwnPropertyDescriptor(instance, name);
+      if (descriptor?.get) continue;
+      current = descriptor && 'value' in descriptor ? descriptor.value : undefined;
+    } catch { continue; }
     if (typeof current === 'function' && !isSignal(current)) continue;
     const serialized = serialize(isSignal(current) ? safeCall(current) : current, context.options.budget, name);
     snapshot.truncations.push(...serialized.truncations);
@@ -28,15 +31,16 @@ const isSignal = (value: unknown): value is (() => unknown) => {
 };
 const safeCall = (signal: () => unknown): unknown => { try { return signal(); } catch (error) { return error instanceof Error ? `[Signal error: ${error.message}]` : '[Signal error]'; } };
 
-export class AngularDiscoveryAdapter implements RuntimeAdapter {
+export class AngularDiscoveryAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'angular-discovery';
+  readonly priority = 0;
   isAvailable(context: RuntimeContext): boolean { return !!(context.window as unknown as { ng?: AngularDebugApi }).ng; }
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const api = (context.window as unknown as { ng: AngularDebugApi }).ng;
     const componentByHost = new Map<Element, ComponentSnapshot>();
     for (const element of context.document.querySelectorAll('*')) {
       let component: object | null = null;
-      try { component = api.getComponent?.(element) ?? null; } catch { /* Angular may reject detached nodes. */ }
+      try { component = api.getComponent?.(element) ?? null; } catch { /* detached node */ }
       const hostRef = context.refs.ref(element, 'element');
       if (component) {
         const ref = context.refs.ref(component, 'component');
@@ -72,7 +76,7 @@ export class AngularDiscoveryAdapter implements RuntimeAdapter {
         parent = parent.parentElement;
       }
     }
-    snapshot.angular.roots = snapshot.components.filter(component => !component.parent).map(component => component.ref);
+    snapshot.application.roots = snapshot.components.filter(component => !component.parent).map(component => component.ref);
   }
 }
 

@@ -1,7 +1,7 @@
 {
-  "name": "@ng-agent/protocol",
+  "name": "@agent-devtools/protocol",
   "version": "0.1.0",
-  "description": "Versioned public protocol for ng-agent devtools",
+  "description": "Versioned Agent DevTools Protocol contracts and schemas",
   "type": "module",
   "sideEffects": false,
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
@@ -13,6 +13,5 @@
   },
   "dependencies": { "zod": "catalog:" },
   "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" },
-  "publishConfig": { "access": "public" },
   "license": "MIT"
 }

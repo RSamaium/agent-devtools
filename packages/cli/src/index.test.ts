@@ -11,8 +11,10 @@ describe('CLI contract', () => {
     const target = io();
     expect(await runCli(['help'], target.streams)).toBe(0);
     expect(target.output().stdout).toContain('components tree');
+    expect(target.output().stdout).toContain('scene tree');
+    expect(target.output().stdout).toContain('assets textures');
     expect(target.output().stdout).toContain('Machine-readable catalog');
-    for (const command of CLI_COMMANDS) expect(target.output().stdout).toContain(command.usage.slice('ng-agent '.length));
+    for (const command of CLI_COMMANDS) expect(target.output().stdout).toContain(command.usage.slice('agent-devtools '.length));
   });
 
   it('prints contextual help through both supported syntaxes', async () => {
@@ -22,7 +24,7 @@ describe('CLI contract', () => {
     expect(await runCli(['help', 'component', 'inspect'], explicit.streams)).toBe(0);
     expect(await runCli(['component', 'inspect', '--help'], contextual.streams)).toBe(0);
     expect(await runCli(['component', 'inspect', 'CheckoutComponent', '--help'], afterArgument.streams)).toBe(0);
-    expect(explicit.output().stdout).toContain('ng-agent component inspect <name-or-ref>');
+    expect(explicit.output().stdout).toContain('agent-devtools component inspect <name-or-ref>');
     expect(contextual.output().stdout).toBe(explicit.output().stdout);
     expect(afterArgument.output().stdout).toBe(explicit.output().stdout);
     expect(contextual.output().stderr).toBe('');
@@ -32,16 +34,17 @@ describe('CLI contract', () => {
     const target = io();
     expect(await runCli(['commands', '--json'], target.streams)).toBe(0);
     const document = JSON.parse(target.output().stdout) as ReturnType<typeof createHelpDocument>;
-    expect(document).toMatchObject({ schemaVersion: '1.0.0', name: 'ng-agent', protocolVersion: '1.0.0', path: [] });
+    expect(document).toMatchObject({ schemaVersion: '1.0.0', name: 'agent-devtools', protocolVersion: '1.0.0', path: [] });
     expect(document.commands).toHaveLength(CLI_COMMANDS.length);
     expect(new Set(document.commands.map(item => item.path.join(' '))).size).toBe(document.commands.length);
     expect(document.commands.every(item => item.examples.length > 0 && item.output.length > 0)).toBe(true);
     expect(document.commands).toEqual(expect.arrayContaining([
-      expect.objectContaining({ path: ['snapshot'], mutation: false }),
-      expect.objectContaining({ path: ['signal', 'set'], mutation: true }),
-      expect.objectContaining({ path: ['ngrx', 'dispatch'], mutation: true }),
+      expect.objectContaining({ path: ['snapshot'] }),
+      expect.objectContaining({ path: ['query'] }),
+      expect.objectContaining({ path: ['scene', 'tree'] }),
+      expect.objectContaining({ path: ['rendering', 'info'] }),
     ]));
-    expect(document.exitCodes.map(item => item.code)).toEqual([0, 1, 2, 3, 4, 5]);
+    expect(document.exitCodes.map(item => item.code)).toEqual([0, 1, 2, 3, 4]);
   });
 
   it('filters JSON help by command group', async () => {
@@ -49,7 +52,7 @@ describe('CLI contract', () => {
     expect(await runCli(['help', 'router', '--json'], target.streams)).toBe(0);
     const document = JSON.parse(target.output().stdout) as ReturnType<typeof createHelpDocument>;
     expect(document.path).toEqual(['router']);
-    expect(document.commands.map(item => item.path.join(' '))).toEqual(['router tree', 'router active', 'router events', 'router navigate']);
+    expect(document.commands.map(item => item.path.join(' '))).toEqual(['router tree', 'router active', 'router events']);
   });
 
   it('rejects an unknown help topic without opening a session', async () => {

@@ -1,6 +1,3 @@
-# `@ng-agent/protocol`
+# `@agent-devtools/protocol`
 
-Versioned public protocol for ng-agent devtools.
-
-This package is part of the `@ng-agent/devtools` platform. It uses the versioned `@ng-agent/protocol` data model and is intended for Angular development builds.
-
+Framework-neutral ADP types, JSON-RPC contracts, standard domain identifiers and Zod schemas. See [ADP v1](../../docs/protocol/adp-v1.md).

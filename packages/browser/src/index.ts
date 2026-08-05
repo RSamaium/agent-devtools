@@ -1,9 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { NgAgentClient, type Transport } from '@ng-agent/core';
+import { AgentDevToolsClient, type Transport } from '@agent-devtools/core';
 import type { Browser, Page } from 'playwright-core';
 import { chromium, firefox, webkit } from 'playwright-core';
-import type { CommandMap, CommandName, RpcRequest, RpcResponse } from '@ng-agent/protocol';
+import type { CommandMap, CommandName, RpcRequest, RpcResponse } from '@agent-devtools/protocol';
 
 export interface BrowserConnectOptions {
   url?: string;
@@ -11,8 +11,8 @@ export interface BrowserConnectOptions {
   headless?: boolean;
   timeoutMs?: number;
   executablePath?: string;
-  allowMutations?: boolean;
   browserName?: 'chromium' | 'firefox' | 'webkit';
+  adapterScripts?: string[];
 }
 
 export class PageTransport implements Transport {
@@ -21,11 +21,11 @@ export class PageTransport implements Transport {
     try {
       const rawRequest = JSON.stringify(request);
       const response: unknown = await this.page.evaluate(async ({ raw, timeout }: { raw: string; timeout: number }) => {
-        const bridge = (window as unknown as { __NG_AGENT__?: { request(request: unknown): Promise<unknown> } }).__NG_AGENT__;
-        if (!bridge) throw new Error('ng-agent runtime bridge is not installed');
+        const bridge = (window as unknown as { __AGENT_DEVTOOLS__?: { request(request: unknown): Promise<unknown> } }).__AGENT_DEVTOOLS__;
+        if (!bridge) throw new Error('agent-devtools runtime bridge is not installed');
         return Promise.race([
           bridge.request(JSON.parse(raw) as unknown),
-          new Promise<never>((_, reject) => window.setTimeout(() => reject(new Error(`ng-agent request timed out after ${timeout}ms`)), timeout)),
+          new Promise<never>((_, reject) => window.setTimeout(() => reject(new Error(`agent-devtools request timed out after ${timeout}ms`)), timeout)),
         ]);
       }, { raw: rawRequest, timeout: timeoutMs });
       return response as RpcResponse<CommandMap[C]['result']>;
@@ -39,7 +39,7 @@ export class PageTransport implements Transport {
 
 const runtimeScript = async (): Promise<string> => readFile(fileURLToPath(new URL('./page/page-entry.global.js', import.meta.url)), 'utf8');
 
-export async function connectBrowser(options: BrowserConnectOptions): Promise<NgAgentClient> {
+export async function connectBrowser(options: BrowserConnectOptions): Promise<AgentDevToolsClient> {
   let browser: Browser;
   const browserType = options.browserName === 'firefox' ? firefox : options.browserName === 'webkit' ? webkit : chromium;
   if (options.cdpUrl) {
@@ -53,8 +53,10 @@ export async function connectBrowser(options: BrowserConnectOptions): Promise<Ng
   const page = context.pages()[0] ?? await context.newPage();
   const content = await runtimeScript();
   await context.addInitScript({ content });
+  for (const adapterContent of options.adapterScripts ?? []) await context.addInitScript({ content: adapterContent });
   if (options.url) await page.goto(options.url, { waitUntil: 'domcontentloaded', timeout: options.timeoutMs ?? 30_000 });
-  const installed = await page.evaluate(() => !!(window as unknown as { __NG_AGENT__?: unknown }).__NG_AGENT__);
+  const installed = await page.evaluate(() => !!(window as unknown as { __AGENT_DEVTOOLS__?: unknown }).__AGENT_DEVTOOLS__);
   if (!installed) await page.addScriptTag({ content });
-  return new NgAgentClient(new PageTransport(page, async () => browser.close()), { ...(options.timeoutMs === undefined ? {} : { timeoutMs: options.timeoutMs }), ...(options.allowMutations === undefined ? {} : { allowMutations: options.allowMutations }) });
+  for (const adapterContent of options.adapterScripts ?? []) await page.addScriptTag({ content: adapterContent });
+  return new AgentDevToolsClient(new PageTransport(page, async () => browser.close()), options.timeoutMs === undefined ? {} : { timeoutMs: options.timeoutMs });
 }

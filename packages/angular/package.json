@@ -1,8 +1,9 @@
 {
-  "name": "@ng-agent/angular", "version": "0.1.0", "description": "Optional Angular instrumentation provider for ng-agent", "type": "module", "sideEffects": false,
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }, "files": ["dist"],
-  "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts --format esm --dts --clean --external @angular/core", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
+  "name": "@agent-devtools/angular", "version": "0.1.0", "description": "Angular reference adapter, browser composition and instrumentation", "type": "module", "sideEffects": false,
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }, "./runtime": { "types": "./dist/runtime.d.ts", "import": "./dist/runtime.js" }, "./browser": { "types": "./dist/browser.d.ts", "import": "./dist/browser.js" }, "./browser-script": "./dist/page/page-entry.global.js" }, "files": ["dist"],
+  "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts src/runtime.ts src/browser.ts --format esm --dts --clean --external @angular/core && tsup src/page-entry.ts --format iife --global-name AgentDevToolsAngular --out-dir dist/page --minify", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
+  "dependencies": { "@agent-devtools/browser": "workspace:^", "@agent-devtools/protocol": "workspace:^", "@agent-devtools/runtime": "workspace:^", "@agent-devtools/internal-angular-components": "workspace:^", "@agent-devtools/internal-angular-router": "workspace:^", "@agent-devtools/internal-angular-di": "workspace:^", "@agent-devtools/internal-angular-signals": "workspace:^", "@agent-devtools/internal-angular-forms": "workspace:^", "@agent-devtools/internal-angular-signal-forms": "workspace:^", "@agent-devtools/internal-angular-ngrx-store": "workspace:^", "@agent-devtools/internal-angular-ngrx-signal-store": "workspace:^", "@agent-devtools/internal-angular-profiler": "workspace:^" },
   "peerDependencies": { "@angular/core": ">=20 <23", "@angular/forms": ">=20 <23", "@angular/router": ">=20 <23" },
   "peerDependenciesMeta": { "@angular/forms": { "optional": true }, "@angular/router": { "optional": true } },
-  "devDependencies": { "@angular/core": "^22.0.0", "tsup": "^8.5.0", "typescript": "catalog:" }, "publishConfig": { "access": "public" }, "license": "MIT"
+  "devDependencies": { "@angular/core": "^22.0.0", "tsup": "^8.5.0", "typescript": "catalog:" }, "license": "MIT"
 }

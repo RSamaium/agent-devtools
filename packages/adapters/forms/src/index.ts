@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type RuntimeAdapter, type RuntimeContext } from '@ng-agent/runtime';
-import type { FormControlSnapshot, FormErrorSnapshot, Snapshot } from '@ng-agent/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { FormControlSnapshot, FormErrorSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
 
 interface AbstractControlLike { value?: unknown; valid?: boolean; invalid?: boolean; pending?: boolean; disabled?: boolean; dirty?: boolean; touched?: boolean; errors?: Record<string, unknown> | null; controls?: Record<string, AbstractControlLike> | AbstractControlLike[]; getRawValue?(): unknown }
 const errorsOf = (errors: Record<string, unknown> | null | undefined, context: RuntimeContext): FormErrorSnapshot[] => Object.entries(errors ?? {}).map(([code, value]) => ({ code, value: serialize(value, context.options.budget).value }));
@@ -8,10 +8,10 @@ const captureControl = (control: AbstractControlLike, name: string, path: string
   let rawValue: unknown; try { rawValue = control.getRawValue?.(); } catch { rawValue = undefined; }
   return { ref: context.refs.ref(control as object, 'field'), name, path, controlType: Array.isArray(control.controls) ? 'array' : control.controls ? 'group' : 'control', value: serialize(control.value, context.options.budget, path).value, ...(rawValue === undefined ? {} : { rawValue: serialize(rawValue, context.options.budget, path).value }), valid: !!control.valid, invalid: !!control.invalid, pending: !!control.pending, disabled: !!control.disabled, dirty: !!control.dirty, touched: !!control.touched, errors: errorsOf(control.errors, context), children };
 };
-export class FormsAdapter implements RuntimeAdapter {
+export class FormsAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'forms'; readonly priority = 40;
   isAvailable(context: RuntimeContext) { return typeof (context.window as unknown as { ng?: { getDirectives?: unknown } }).ng?.getDirectives === 'function' || [...(getInstrumentation(context.window)?.records.values() ?? [])].some(item => item.kind === 'form'); }
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const api = (context.window as unknown as { ng?: { getDirectives(element: Element): object[] } }).ng;
     const seen = new Set<object>();
     if (api) for (const element of context.document.querySelectorAll('form,[formGroup],[ngForm]')) {

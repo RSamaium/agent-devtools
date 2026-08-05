@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { FormField, form, required, validate } from '@angular/forms/signals';
-import { instrumentSignalForm } from '@ng-agent/angular';
+import { instrumentSignalForm } from '@agent-devtools/angular';
 
 @Component({ selector: 'app-root', imports: [FormField], templateUrl: './app.html', styleUrl: './app.css' })
 export class App {

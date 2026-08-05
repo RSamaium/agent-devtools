@@ -1,6 +1,3 @@
-# `@ng-agent/testing`
+# `@agent-devtools/testing`
 
-Fixtures, harness and assertions for ng-agent adapters.
-
-This package is part of the `@ng-agent/devtools` platform. It uses the versioned `@ng-agent/protocol` data model and is intended for Angular development builds.
-
+Framework-neutral snapshot fixtures, runtime-reference assertions and adapter harness helpers.

@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type RuntimeAdapter, type RuntimeContext } from '@ng-agent/runtime';
-import type { FormErrorSnapshot, SignalFormFieldSnapshot, Snapshot } from '@ng-agent/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { FormErrorSnapshot, SignalFormFieldSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
 
 type Readable<T> = T | (() => T);
 interface FieldStateLike { value?: Readable<unknown>; valid?: Readable<boolean>; invalid?: Readable<boolean>; pending?: Readable<boolean>; submitting?: Readable<boolean>; disabled?: Readable<boolean>; dirty?: Readable<boolean>; touched?: Readable<boolean>; errors?: Readable<Array<{ kind?: string; code?: string; message?: string; source?: string; dependsOn?: string[] }>> }
@@ -7,7 +7,7 @@ interface DebugApi { getDirectives?(element: Element): object[]; getComponent?(e
 
 const read = <T>(value: Readable<T> | undefined, fallback: T): T => { try { return typeof value === 'function' ? (value as () => T)() : value ?? fallback; } catch { return fallback; } };
 const errors = (state: FieldStateLike): FormErrorSnapshot[] => read(state.errors, []).map(error => ({ code: error.kind ?? error.code ?? 'validation', ...(error.message ? { message: error.message } : {}), ...(error.source ? { source: error.source } : {}), ...(error.dependsOn ? { dependsOn: error.dependsOn, kind: 'cross-field' as const } : {}) }));
-const captureField = (value: object, path: string, context: RuntimeContext, snapshot: Snapshot): SignalFormFieldSnapshot => {
+const captureField = (value: object, path: string, context: RuntimeContext, snapshot: StandardCaptureSnapshot): SignalFormFieldSnapshot => {
   let state: FieldStateLike = value as FieldStateLike; try { if (typeof value === 'function') state = (value as () => FieldStateLike)(); } catch { /* retain object */ }
   const serialized = serialize(read(state.value, undefined), context.options.budget, path); snapshot.truncations.push(...serialized.truncations);
   return { ref: context.refs.ref(value, 'field'), path, value: serialized.value, valid: read(state.valid, false), invalid: read(state.invalid, false), pending: read(state.pending, false), disabled: read(state.disabled, false), dirty: read(state.dirty, false), touched: read(state.touched, false), errors: errors(state) };
@@ -25,10 +25,10 @@ const unwrapSignal = (value: object): object | undefined => {
   try { const result = value(); return result && (typeof result === 'object' || typeof result === 'function') ? result as object : undefined; } catch { return undefined; }
 };
 
-export class SignalFormsAdapter implements RuntimeAdapter {
+export class SignalFormsAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'signal-forms'; readonly priority = 50;
   isAvailable(context: RuntimeContext) { return !!getInstrumentation(context.window) || typeof (context.window as unknown as { ng?: { getDirectives?: unknown } }).ng?.getDirectives === 'function'; }
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const registry = getInstrumentation(context.window); const fieldsByObject = new Map<object, SignalFormFieldSnapshot>();
     for (const record of registry?.records.values() ?? []) if (record.kind === 'signal-form') {
       const root = record.value as FieldStateLike & Record<string, unknown>; let rootState: FieldStateLike = root;

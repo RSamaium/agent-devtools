@@ -1,0 +1,4 @@
+interface:
+  display_name: "Inspect PixiJS Apps"
+  short_description: "Inspect PixiJS runtime state with Agent DevTools"
+  default_prompt: "Use $inspecting-pixijs-apps to inspect this PixiJS application and explain the relevant runtime evidence."

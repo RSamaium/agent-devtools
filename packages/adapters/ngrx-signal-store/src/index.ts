@@ -1,5 +1,5 @@
-import type { RuntimeRef, Snapshot } from '@ng-agent/protocol';
-import { getInstrumentation, serialize, type RuntimeAdapter, type RuntimeContext } from '@ng-agent/runtime';
+import type { RuntimeRef, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
 
 interface AngularDebugApi { getComponent?(element: Element): object | null }
 type StoreObject = Record<string, unknown>;
@@ -21,7 +21,7 @@ const describeStore = (
   owner: RuntimeRef | undefined,
   injector: RuntimeRef | undefined,
   discovery: 'partial' | 'instrumented',
-  snapshot: Snapshot,
+  snapshot: StandardCaptureSnapshot,
   context: RuntimeContext,
 ): void => {
   const signalEntries = Object.entries(store).filter(([, value]) => isSignal(value));
@@ -59,7 +59,7 @@ const describeStore = (
   });
 };
 
-export class NgrxSignalStoreAdapter implements RuntimeAdapter {
+export class NgrxSignalStoreAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'ngrx-signal-store';
   readonly priority = 61;
 
@@ -67,7 +67,7 @@ export class NgrxSignalStoreAdapter implements RuntimeAdapter {
     return !!getInstrumentation(context.window) || !!(context.window as unknown as { ng?: AngularDebugApi }).ng;
   }
 
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const visited = new WeakSet<object>();
     for (const record of getInstrumentation(context.window)?.records.values() ?? []) {
       if (record.kind !== 'store' || record.metadata?.['type'] !== 'signal-store' || !record.value || typeof record.value !== 'object') continue;

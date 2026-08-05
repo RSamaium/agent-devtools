@@ -1,7 +1,7 @@
 {
-  "name": "@ng-agent/cli", "version": "0.1.0", "description": "Agent-first Angular runtime inspection CLI", "type": "module",
-  "bin": { "ng-agent": "./dist/bin.js" }, "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }, "files": ["dist"],
+  "name": "@agent-devtools/cli", "version": "0.1.0", "description": "Agent DevTools CLI with ADP, Angular and PixiJS adapter commands", "type": "module",
+  "bin": { "agent-devtools": "./dist/bin.js" }, "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }, "files": ["dist"],
   "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts src/bin.ts --format esm --dts --clean", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
-  "dependencies": { "@ng-agent/browser": "workspace:^", "@ng-agent/core": "workspace:^", "@ng-agent/protocol": "workspace:^", "playwright-core": "^1.54.2" },
-  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "publishConfig": { "access": "public" }, "license": "MIT", "engines": { "node": ">=20.19.0" }
+  "dependencies": { "@agent-devtools/angular": "workspace:^", "@agent-devtools/pixi": "workspace:^", "@agent-devtools/browser": "workspace:^", "@agent-devtools/core": "workspace:^", "@agent-devtools/protocol": "workspace:^", "playwright-core": "^1.54.2" },
+  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "license": "MIT", "engines": { "node": ">=20.19.0" }
 }

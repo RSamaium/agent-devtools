@@ -1,14 +1,14 @@
 {
-  "name": "ng-agent-devtools",
+  "name": "agent-devtools",
   "version": "0.1.0",
   "private": true,
-  "description": "Agent-first Angular runtime inspection platform",
+  "description": "Framework-neutral Agent DevTools Protocol implementation",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RSamaium/ng-agent.git"
+    "url": "git+https://github.com/RSamaium/agent-devtools.git"
   },
-  "homepage": "https://github.com/RSamaium/ng-agent#readme",
-  "bugs": "https://github.com/RSamaium/ng-agent/issues",
+  "homepage": "https://github.com/RSamaium/agent-devtools#readme",
+  "bugs": "https://github.com/RSamaium/agent-devtools/issues",
   "type": "module",
   "packageManager": "pnpm@11.16.0",
   "engines": {
@@ -20,8 +20,10 @@
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm test:packages && pnpm test:examples",
     "test:packages": "vitest run",
-    "test:examples": "pnpm --filter './examples/*' test",
+    "test:examples": "pnpm build:example-deps && pnpm --filter './examples/*' test",
+    "build:example-deps": "pnpm --filter @agent-devtools/angular... build",
     "test:browsers": "node scripts/browser-smoke.mjs",
+    "test:browsers:pixi": "node scripts/pixi-browser-smoke.mjs",
     "test:watch": "vitest",
     "lint": "eslint packages",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build"

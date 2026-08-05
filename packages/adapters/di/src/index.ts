@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type RuntimeAdapter, type RuntimeContext } from '@ng-agent/runtime';
-import type { InjectorSnapshot, Snapshot } from '@ng-agent/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { InjectorSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
 
 interface ProviderRecord { token: unknown; provider: unknown; isViewProvider?: boolean }
 interface InjectorMetadata { type: 'element' | 'environment' | 'null'; source: unknown }
@@ -10,13 +10,13 @@ interface AngularDebugApi {
   ɵgetInjectorProviders?(injector: object): ProviderRecord[];
 }
 
-export class DiAdapter implements RuntimeAdapter {
+export class DiAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'di'; readonly priority = 20;
   isAvailable(context: RuntimeContext) {
     return typeof (context.window as unknown as { ng?: { getInjector?: unknown } }).ng?.getInjector === 'function' || !!getInstrumentation(context.window);
   }
 
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const registry = getInstrumentation(context.window);
     const environmentByObject = new Map<object, InjectorSnapshot>();
     for (const record of registry?.records.values() ?? []) {

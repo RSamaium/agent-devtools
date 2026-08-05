@@ -1,6 +1,3 @@
-# `@ng-agent/mcp`
+# `@agent-devtools/mcp`
 
-MCP server for Angular runtime inspection.
-
-This package is part of the `@ng-agent/devtools` platform. It uses the versioned `@ng-agent/protocol` data model and is intended for Angular development builds.
-
+MCP server exposing generic `adp_*` tools plus Angular and PixiJS adapter contributions over the shared ADP client.

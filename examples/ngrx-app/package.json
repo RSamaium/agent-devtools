@@ -11,7 +11,7 @@
   "private": true,
   "packageManager": "pnpm@11.16.0",
   "dependencies": {
-    "@ng-agent/angular": "workspace:^",
+    "@agent-devtools/angular": "workspace:^",
     "@ngrx/store": "^21.0.0",
     "@angular/common": "^21.2.19",
     "@angular/compiler": "^21.2.19",
@@ -32,6 +32,6 @@
     "vitest": "^4.0.8"
   },
   "dependenciesMeta": {
-    "@ng-agent/angular": { "injected": true }
+    "@agent-devtools/angular": { "injected": true }
   }
 }

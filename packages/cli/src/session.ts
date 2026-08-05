@@ -6,12 +6,12 @@ import { join } from 'node:path';
 import { chromium } from 'playwright-core';
 
 export interface StoredSession { cdpUrl: string; pid?: number; url?: string; createdAt: number; userDataDir?: string }
-const sessionDirectory = join(tmpdir(), 'ng-agent-devtools');
+const sessionDirectory = join(tmpdir(), 'agent-devtools');
 const sessionFile = join(sessionDirectory, 'session.json');
 
 export async function loadSession(): Promise<StoredSession> {
   try { return JSON.parse(await readFile(sessionFile, 'utf8')) as StoredSession; }
-  catch { throw new Error('No active ng-agent session. Run `ng-agent open <url>` or `ng-agent connect --cdp <url>`.'); }
+  catch { throw new Error('No active agent-devtools session. Run `agent-devtools open <url>` or `agent-devtools connect --cdp <url>`.'); }
 }
 export async function saveSession(session: StoredSession): Promise<void> { await mkdir(sessionDirectory, { recursive: true }); await writeFile(sessionFile, JSON.stringify(session, null, 2)); }
 

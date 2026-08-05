@@ -1,174 +1,72 @@
-# ng-agent
+# Agent DevTools
 
-Angular runtime inspection built for development agents.
+Agent DevTools is a platform that lets an AI agent observe, understand and explain an application runtime through the open Agent DevTools Protocol (ADP).
 
-`ng-agent` gives an agent structured, correlated access to Angular components, directives, Router state, dependency injection, Signals, classic Forms, Signal Forms, NgRx, profiling, diagnostics, and causal traces. It exposes the same versioned model through a CLI, TypeScript SDK, and MCP server.
+```text
+Application -> Adapter -> ADP -> Agent DevTools -> CLI / MCP / SDK / IDE
+```
 
-> Development builds only. Runtime mutations are disabled by default.
+This repository is under local development. The `@agent-devtools/*` package names describe the target workspace architecture; no npm publication is part of the current milestone.
 
-## Installation
+## V1 development scope
 
-### Global installation (recommended)
+- Generic protocol, client, runtime, browser transport, CLI, MCP and testing packages.
+- Web runtimes through Playwright or Chromium CDP.
+- Angular 20–22 reference adapter with components, directives, Router, DI, Signals, classic Forms, Signal Forms, NgRx and profiling.
+- PixiJS 8 adapter with scene graph, renderer and managed GPU texture metadata.
+- Read-only snapshots, queries, event streams, deterministic diffs and evidence-based explanations.
+
+Graph, diagnostics, replay, application interaction, mutation and dynamic third-party plugin installation are deferred to V2.
+
+## Local quick start
 
 ```bash
-npm install -g @ng-agent/cli
-ng-agent install chromium
+pnpm install
+pnpm build
+pnpm --filter @agent-devtools/browser exec playwright-core install chromium
+pnpm --filter basic-app start
 ```
 
-Install every supported browser when cross-browser inspection is required:
+In another terminal:
 
 ```bash
-ng-agent install chromium firefox webkit
+pnpm --filter @agent-devtools/cli exec agent-devtools open http://localhost:4200
+pnpm --filter @agent-devtools/cli exec agent-devtools status --json
+pnpm --filter @agent-devtools/cli exec agent-devtools snapshot --json
+pnpm --filter @agent-devtools/cli exec agent-devtools query components --resource components name=App --json
+pnpm --filter @agent-devtools/cli exec agent-devtools close
 ```
 
-On Linux, `--with-deps` also asks Playwright to install browser system dependencies:
+The Angular-oriented commands are adapter contributions:
 
 ```bash
-ng-agent install chromium --with-deps
+pnpm --filter @agent-devtools/cli exec agent-devtools components tree --json
+pnpm --filter @agent-devtools/cli exec agent-devtools router active --json
+pnpm --filter @agent-devtools/cli exec agent-devtools di tree --json
+pnpm --filter @agent-devtools/cli exec agent-devtools signals list --json
+pnpm --filter @agent-devtools/cli exec agent-devtools signal-forms list --json
 ```
 
-Requirements: Node.js 20.19 or later and an Angular 20–22 development build. Signal Forms require Angular 21 or later.
-
-### Project-local installation
-
-Pin the CLI in a project when reproducible CI versions matter:
+PixiJS applications registered with `@pixi/devtools` expose dedicated read-only commands:
 
 ```bash
-npm install --save-dev @ng-agent/cli
-npx ng-agent install chromium
+pnpm --filter @agent-devtools/cli exec agent-devtools scene tree --json
+pnpm --filter @agent-devtools/cli exec agent-devtools rendering info --json
+pnpm --filter @agent-devtools/cli exec agent-devtools assets textures --json
 ```
 
-## Quick start
+## Angular instrumentation
 
-Start your Angular application normally:
-
-```bash
-ng serve
-```
-
-Open it in a managed headless browser and inspect the runtime:
-
-```bash
-ng-agent open http://localhost:4200
-ng-agent status
-ng-agent snapshot --scope current-route --json
-ng-agent query fields invalid=true --json
-```
-
-Runtime references from snapshots can be reused by later commands:
-
-```bash
-ng-agent component inspect cmp-12 --json
-ng-agent signal-form field sf-3:user.email --json
-ng-agent explain field field-8 --json
-```
-
-Close the browser session when finished:
-
-```bash
-ng-agent close
-```
-
-To attach to an existing Chromium instance instead:
-
-```bash
-chromium --remote-debugging-port=9222
-ng-agent connect --cdp http://localhost:9222
-```
-
-## Discover commands
-
-The help is complete and can be explored without starting a browser:
-
-```bash
-ng-agent help
-ng-agent help router
-ng-agent component inspect --help
-```
-
-Agents can retrieve the full versioned command catalog as JSON. It includes arguments, options, output descriptions, examples, mutation markers, and exit codes:
-
-```bash
-ng-agent commands --json
-ng-agent help signal-form --json
-```
-
-Machine-readable command output uses `--json`; event streams use `--jsonl`. Diagnostics go to stderr, so stdout remains safe to parse.
-
-## Use with AI agents
-
-### Just ask the agent
-
-The CLI is self-describing. A coding agent can start with:
-
-> Use ng-agent to inspect the Angular application at http://localhost:4200. Run `ng-agent --help` to discover commands, use JSON output, and close the session when finished.
-
-### Install the agent skill
-
-Install the repository skill for richer Angular-specific inspection guidance:
-
-```bash
-npx skills add RSamaium/ng-agent --skill inspecting-angular-apps
-```
-
-The skill can be used by Codex, Claude Code, Cursor, Gemini CLI, GitHub Copilot, OpenCode, Windsurf, and other clients supported by the `skills` CLI. It teaches the agent to prefer runtime evidence, handle stale references, distinguish observed/instrumented/inferred relations, and keep mutations disabled unless explicitly requested.
-
-Do not copy `SKILL.md` manually: installing it from the repository makes updates easier to track.
-
-For persistent project instructions, add this to `AGENTS.md` or the equivalent file used by your agent:
-
-```md
-## Angular runtime inspection
-
-Use `ng-agent` when runtime evidence is needed.
-Run `ng-agent help --json` to discover the complete command contract.
-Prefer `--json` for reads and `--jsonl` for event streams.
-Treat partial discovery and inferred relations as non-exhaustive.
-Close browser sessions created by the agent with `ng-agent close`.
-```
-
-## MCP server
-
-Install or run the MCP server directly from npm:
-
-```bash
-npm install -g @ng-agent/mcp
-ng-agent-mcp
-```
-
-Example MCP client configuration:
-
-```json
-{
-  "mcpServers": {
-    "ng-agent": {
-      "command": "npx",
-      "args": ["-y", "@ng-agent/mcp"]
-    }
-  }
-}
-```
-
-The server exposes paginated `angular_*` tools for status, snapshots, components, Router, DI, Signals, Forms, Signal Forms, NgRx, profiling, queries, diffs, explanations, graphs, diagnostics, traces, sessions, replay, and controlled mutations.
-
-## Optional Angular instrumentation
-
-Discovery mode requires no application changes. Add the provider when stable names, history, richer correlations, Signal/Form events, redaction, or plugins are needed:
+Runtime discovery needs no application change. Optional instrumentation provides stable identities, histories, correlations and redaction:
 
 ```ts
-import { provideNgAgentDevtools } from '@ng-agent/angular';
+import { provideAgentDevtools } from '@agent-devtools/angular';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideNgAgentDevtools({
-      redact: [
-        'auth.token',
-        'user.password',
-        'payment.cardNumber',
-        'headers.authorization',
-      ],
+    provideAgentDevtools({
+      redact: ['auth.token', 'user.password'],
       historyLimit: 100,
-      allowRuntimeMutations: false,
       signalForms: {
         captureSchemas: true,
         captureValidationEvents: true,
@@ -179,117 +77,78 @@ bootstrapApplication(AppComponent, {
 });
 ```
 
-Register application-owned Signals, Signal Forms, Router instances, services, and stores with the helpers exported by `@ng-agent/angular` when stable identity and event history are required.
+## SDK
 
-## Common workflows
-
-### Inspect Angular structure
-
-```bash
-ng-agent components tree --json
-ng-agent router active --json
-ng-agent di tree --json
-ng-agent signals list --json
-```
-
-### Diagnose forms and state
-
-```bash
-ng-agent forms list --json
-ng-agent signal-forms list --json
-ng-agent signal-form errors sf-3 --json
-ng-agent ngrx actions --last 20 --json
-ng-agent diagnostics --json
-```
-
-### Profile and trace
-
-```bash
-ng-agent profile start
-# interact with the application
-ng-agent profile stop --output profile.json
-
-ng-agent trace start
-ng-agent click @e42
-ng-agent trace stop --json
-```
-
-### Watch runtime events
-
-```bash
-ng-agent watch --jsonl
-```
-
-## TypeScript SDK
-
-```bash
-npm install @ng-agent/core @ng-agent/browser
-```
+Use the Angular composition for the reference adapter:
 
 ```ts
-import { connectBrowser } from '@ng-agent/browser';
+import { connectAngularBrowser } from '@agent-devtools/angular/browser';
 
-const client = await connectBrowser({
+const client = await connectAngularBrowser({
   url: 'http://localhost:4200',
   browserName: 'chromium',
   headless: true,
 });
 
 try {
-  const snapshot = await client.snapshot({ scope: 'current-route' });
-  const invalidFields = await client.query({
-    domain: 'fields',
-    where: { invalid: true },
+  const status = await client.status();
+  const snapshot = await client.snapshot();
+  const components = await client.query({
+    domain: 'components',
+    resource: 'components',
   });
-  console.log({ snapshot, invalidFields });
+  console.log({ status, snapshot, components });
 } finally {
   await client.close();
 }
 ```
 
-## Safety
+`@agent-devtools/browser` remains adapter-neutral and accepts adapter bundles through `adapterScripts`.
 
-- Reads are the default and never enable runtime mutations.
-- Values are serialized with depth, array, string, and total-volume budgets.
-- Redaction is applied before values enter snapshots and event history.
-- Provider factories and SignalStore methods are never invoked for inspection.
-- References include a generation; stale references return a structured error.
-- Mutations require a development build, local origin, application opt-in, explicit allowlist, CLI opt-in, and a capability token.
+PixiJS-only consumers can use `connectPixiBrowser()` from `@agent-devtools/pixi/browser`. CLI and MCP load the Angular and PixiJS bundles together and activate only the adapters detected on the page.
 
 ## Packages
 
-| Package | Purpose |
+| Package | Responsibility |
 |---|---|
-| `@ng-agent/protocol` | Serializable contracts and runtime schemas |
-| `@ng-agent/core` | Client, query, snapshot diff, and transport API |
-| `@ng-agent/runtime` | Main-world runtime bridge and safe serializer |
-| `@ng-agent/angular` | Optional provider and application instrumentation |
-| `@ng-agent/browser` | Playwright and CDP transport |
-| `@ng-agent/cli` | Global `ng-agent` executable and session management |
-| `@ng-agent/mcp` | MCP server exposing `angular_*` tools |
-| `@ng-agent/testing` | Fixtures, harnesses, and reference assertions |
-| `@ng-agent/adapter-*` | Optional Angular and NgRx runtime domains |
-| `@ng-agent/plugin-api` | Versioned plugin definition API |
+| `@agent-devtools/protocol` | ADP types, schemas and version policy |
+| `@agent-devtools/core` | Generic client, transport, query and diff helpers |
+| `@agent-devtools/runtime` | Adapter host, sessions, snapshots, events and serialization |
+| `@agent-devtools/browser` | Generic Playwright/CDP transport |
+| `@agent-devtools/angular` | Angular adapter, browser composition and instrumentation |
+| `@agent-devtools/pixi` | PixiJS scene graph, rendering and texture adapter |
+| `@agent-devtools/cli` | Generic commands plus Angular and PixiJS contributions |
+| `@agent-devtools/mcp` | `adp_*`, Angular and PixiJS tools |
+| `@agent-devtools/testing` | Generic fixtures and adapter test harnesses |
 
-## Development
+The packages under `packages/adapters/` are private implementation modules aggregated by `@agent-devtools/angular`.
+
+## Safety
+
+- V1 is read-only and development-oriented.
+- Serialization enforces depth, collection, string, property and total-byte budgets.
+- Configured paths are redacted before values enter snapshots or event history.
+- Inspection does not invoke provider factories, getters or store methods.
+- Runtime references are scoped to a snapshot generation.
+- CDP endpoints should remain bound to loopback interfaces.
+
+## Documentation
+
+- [Architecture](docs/architecture/overview.md)
+- [ADP v1](docs/protocol/adp-v1.md)
+- [Angular adapter](docs/adapters/angular.md)
+- [PixiJS adapter](docs/adapters/pixi.md)
+- [RFC index](docs/rfc/README.md)
+- [Implementation notes](docs/features/agent-devtools-platform/implementation.md)
+- [Public API and migration](docs/features/agent-devtools-platform/public-api.md)
+- [Security policy](SECURITY.md)
+
+## Validation
 
 ```bash
-git clone https://github.com/RSamaium/ng-agent.git
-cd ng-agent
-pnpm install
 pnpm check
-```
-
-Run the included instrumented application and browser smoke tests:
-
-```bash
-pnpm --filter @ng-agent/browser exec playwright-core install chromium firefox webkit
-pnpm --filter basic-app start
-# in another terminal
 pnpm test:browsers
 ```
-
-See the [architecture](docs/architecture.md), [CLI contract](docs/cli.md), [protocol policy](docs/protocol.md), [compatibility matrix](docs/compatibility.md), and [security policy](SECURITY.md).
 
 ## License
 

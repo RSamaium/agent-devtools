@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type RuntimeAdapter, type RuntimeContext } from '@ng-agent/runtime';
-import type { DependencyGraph, RuntimeKind, Snapshot } from '@ng-agent/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { RuntimeKind, StandardCaptureSnapshot } from '@agent-devtools/protocol';
 
 interface DebugSignalNode { kind: string; id: string; epoch?: number; label?: string; value?: unknown; debuggableFn?: () => unknown }
 interface DebugSignalGraph { nodes: DebugSignalNode[]; edges: Array<{ consumer: number; producer: number }> }
@@ -7,14 +7,14 @@ interface SignalDebugApi { ɵgetSignalGraph?(injector: object): DebugSignalGraph
 
 const runtimeKind = (kind: string): RuntimeKind => kind === 'effect' || kind === 'afterRenderEffectPhase' ? 'effect' : kind === 'template' ? 'selector' : kind === 'computed' || kind === 'linkedSignal' ? 'computed' : 'signal';
 
-export class SignalsAdapter implements RuntimeAdapter {
+export class SignalsAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'signals';
   readonly priority = 30;
   private readonly graphObjects = new Map<string, object>();
 
   isAvailable(context: RuntimeContext) { return !!getInstrumentation(context.window) || typeof (context.window as unknown as { ng?: SignalDebugApi }).ng?.ɵgetSignalGraph === 'function'; }
 
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const registry = getInstrumentation(context.window);
     for (const record of registry?.records.values() ?? []) if (record.kind === 'signal') {
       const signal = record.value as (() => unknown); let value: unknown; let error: string | undefined;
@@ -34,18 +34,7 @@ export class SignalsAdapter implements RuntimeAdapter {
     }
   }
 
-  graph(snapshot: Snapshot, graph: DependencyGraph, context: RuntimeContext): void {
-    for (const debugGraph of this.debugGraphs(snapshot, context)) {
-      const refs = debugGraph.nodes.map(node => {
-        const ref = context.refs.ref(this.identity(node), runtimeKind(node.kind));
-        if (!graph.nodes.some(item => item.ref.id === ref.id)) graph.nodes.push({ ref, label: node.label ?? node.id, data: serialize({ kind: node.kind, ...(node.epoch === undefined ? {} : { epoch: node.epoch }) }).value });
-        return ref;
-      });
-      for (const edge of debugGraph.edges) { const consumer = refs[edge.consumer]; const producer = refs[edge.producer]; if (consumer && producer && !graph.edges.some(item => item.kind === 'reads' && item.from.id === consumer.id && item.to.id === producer.id)) graph.edges.push({ from: consumer, to: producer, kind: 'reads', confidence: 'observed' }); }
-    }
-  }
-
-  private debugGraphs(snapshot: Snapshot, context: RuntimeContext): DebugSignalGraph[] {
+  private debugGraphs(snapshot: StandardCaptureSnapshot, context: RuntimeContext): DebugSignalGraph[] {
     const api = (context.window as unknown as { ng?: SignalDebugApi }).ng; if (!api?.ɵgetSignalGraph) return [];
     const result: DebugSignalGraph[] = [];
     for (const injector of snapshot.injectors) {

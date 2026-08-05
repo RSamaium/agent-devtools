@@ -1,7 +1,7 @@
 {
-  "name": "@ng-agent/core",
+  "name": "@agent-devtools/core",
   "version": "0.1.0",
-  "description": "High-level client, snapshots, diff, query and explain for ng-agent",
+  "description": "Framework-neutral ADP client, query and snapshot diff helpers",
   "type": "module",
   "sideEffects": false,
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
@@ -11,8 +11,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "dependencies": { "@ng-agent/protocol": "workspace:^" },
+  "dependencies": { "@agent-devtools/protocol": "workspace:^" },
   "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" },
-  "publishConfig": { "access": "public" },
   "license": "MIT"
 }

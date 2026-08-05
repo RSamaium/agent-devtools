@@ -1,6 +1,0 @@
-{
-  "name": "@ng-agent/plugin-api", "version": "0.1.0", "description": "Public plugin API for ng-agent V2", "type": "module", "sideEffects": false,
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }, "files": ["dist"],
-  "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts --format esm --dts --clean", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
-  "dependencies": { "@ng-agent/runtime": "workspace:^" }, "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "publishConfig": { "access": "public" }, "license": "MIT"
-}

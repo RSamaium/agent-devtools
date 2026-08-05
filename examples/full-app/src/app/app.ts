@@ -1,7 +1,7 @@
 import { Component, InjectionToken, computed, inject, signal } from '@angular/core';
 import { FormField, email, form, required } from '@angular/forms/signals';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { instrumentRouter, instrumentService, instrumentSignal, instrumentSignalForm, instrumentStore } from '@ng-agent/angular';
+import { instrumentRouter, instrumentService, instrumentSignal, instrumentSignalForm, instrumentStore } from '@agent-devtools/angular';
 
 export const CHECKOUT_API = new InjectionToken<string>('CHECKOUT_API');
 

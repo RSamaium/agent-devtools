@@ -1,6 +1,3 @@
-# `@ng-agent/angular`
+# `@agent-devtools/angular`
 
-Optional Angular instrumentation provider for ng-agent.
-
-This package is part of the `@ng-agent/devtools` platform. It uses the versioned `@ng-agent/protocol` data model and is intended for Angular development builds.
-
+Angular reference adapter, browser composition, optional DI instrumentation and form assistance. Internal domain modules are aggregated behind this package.

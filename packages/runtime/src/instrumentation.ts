@@ -1,6 +1,6 @@
 export interface RuntimeInstrumentationRecord {
   id: string;
-  kind: 'signal' | 'effect' | 'form' | 'signal-form' | 'store' | 'service' | 'injector';
+  kind: string;
   name: string;
   value: unknown;
   owner?: object;
@@ -14,5 +14,5 @@ export interface RuntimeInstrumentationRegistry {
   events: RuntimeInstrumentationEvent[];
 }
 export function getInstrumentation(window: Window): RuntimeInstrumentationRegistry | undefined {
-  return (window as unknown as { __NG_AGENT_INSTRUMENTATION__?: RuntimeInstrumentationRegistry }).__NG_AGENT_INSTRUMENTATION__;
+  return (window as unknown as { __AGENT_DEVTOOLS_INSTRUMENTATION__?: RuntimeInstrumentationRegistry }).__AGENT_DEVTOOLS_INSTRUMENTATION__;
 }

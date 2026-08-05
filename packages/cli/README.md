@@ -1,6 +1,3 @@
-# `@ng-agent/cli`
+# `@agent-devtools/cli`
 
-Agent-first Angular runtime inspection CLI.
-
-This package is part of the `@ng-agent/devtools` platform. It uses the versioned `@ng-agent/protocol` data model and is intended for Angular development builds.
-
+Local `agent-devtools` executable with generic ADP commands plus Angular and PixiJS adapter contributions. V1 is read-only.

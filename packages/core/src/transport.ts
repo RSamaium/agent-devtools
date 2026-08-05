@@ -1,4 +1,4 @@
-import type { CommandMap, CommandName, RpcFailure, RpcRequest, RpcResponse } from '@ng-agent/protocol';
+import type { CommandMap, CommandName, RpcFailure, RpcRequest, RpcResponse } from '@agent-devtools/protocol';
 
 export interface Transport {
   request<C extends CommandName>(request: RpcRequest<C>, timeoutMs: number): Promise<RpcResponse<CommandMap[C]['result']>>;

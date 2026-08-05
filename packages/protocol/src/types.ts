@@ -1,12 +1,16 @@
 export const PROTOCOL_VERSION = '1.0.0' as const;
 
-export type RuntimeKind =
-  | 'element' | 'component' | 'directive' | 'injector' | 'provider' | 'service'
-  | 'signal' | 'computed' | 'effect' | 'form' | 'field' | 'route' | 'store'
-  | 'selector' | 'network-request';
+export type RuntimeKind = string;
+
+export type StandardDomainId =
+  | 'application' | 'components' | 'routing' | 'dependency-injection'
+  | 'state' | 'forms' | 'performance' | 'rendering' | 'scene-graph'
+  | 'assets' | 'network' | 'diagnostics';
+export type DomainId = StandardDomainId | (string & {});
 
 export interface RuntimeRef {
   id: string;
+  domain: DomainId;
   kind: RuntimeKind;
   generation: number;
 }
@@ -35,7 +39,8 @@ export interface PageMetadata {
   capturedAt: number;
 }
 
-export interface AngularMetadata {
+export interface ApplicationMetadata {
+  framework: string;
   detected: boolean;
   version?: string;
   devMode: boolean;
@@ -43,6 +48,37 @@ export interface AngularMetadata {
   discovery: DiscoveryLevel;
   renderMode?: 'client' | 'ssr' | 'hydrated';
   multiRoot?: boolean;
+}
+
+export interface DomainDescriptor {
+  id: DomainId;
+  version: string;
+  capabilities: string[];
+  commands?: Array<{ name: string; description: string }>;
+}
+
+export interface AdapterDescriptor {
+  id: string;
+  name: string;
+  version: string;
+  protocolRange: string;
+  framework?: { name: string; version?: string };
+  domains: DomainDescriptor[];
+  capabilities: string[];
+}
+
+export interface RuntimeMetadata {
+  environment: 'web' | 'node' | 'unknown';
+  url?: string;
+  title?: string;
+  userAgent?: string;
+  capturedAt: number;
+}
+
+export interface DomainSnapshot<T = unknown> {
+  id: DomainId;
+  version: string;
+  data: T;
 }
 
 export type DiscoveryLevel = 'complete' | 'partial' | 'instrumented';
@@ -255,8 +291,35 @@ export interface Snapshot {
   id: string;
   name?: string;
   generation: number;
-  page: PageMetadata;
-  angular: AngularMetadata;
+  runtime: RuntimeMetadata;
+  adapters: AdapterDescriptor[];
+  domains: Record<string, DomainSnapshot>;
+  warnings: RuntimeWarning[];
+  truncations: Truncation[];
+}
+
+export interface StandardDomainData {
+  application: ApplicationMetadata;
+  components: { components: ComponentSnapshot[]; directives: DirectiveSnapshot[] };
+  routing: RouterSnapshot;
+  'dependency-injection': { injectors: InjectorSnapshot[]; providers: ProviderSnapshot[] };
+  state: { signals: SignalSnapshot[]; stores: StoreSnapshot[] };
+  forms: { forms: FormSnapshot[]; signalForms: SignalFormSnapshot[] };
+  performance: ProfileSnapshot | null;
+  rendering: SerializedValue;
+  'scene-graph': SerializedValue;
+  assets: SerializedValue;
+  network: SerializedValue;
+  diagnostics: SerializedValue;
+}
+
+/** Mutable standard-domain view used by an adapter while capturing a snapshot. */
+export interface StandardCaptureSnapshot {
+  id: string;
+  name?: string;
+  generation: number;
+  runtime: RuntimeMetadata;
+  application: ApplicationMetadata;
   router?: RouterSnapshot;
   components: ComponentSnapshot[];
   directives: DirectiveSnapshot[];
@@ -271,16 +334,12 @@ export interface Snapshot {
   truncations: Truncation[];
 }
 
-export type RuntimeEventType =
-  | 'navigation' | 'component-created' | 'component-destroyed' | 'signal-changed'
-  | 'form-status-changed' | 'signal-form-field-changed' | 'signal-form-validation-changed'
-  | 'signal-form-submission'
-  | 'ngrx-action' | 'store-changed' | 'change-detection-cycle' | 'runtime-warning'
-  | 'network-request' | 'user-interaction';
+export type RuntimeEventType = string;
 
 export interface RuntimeEvent {
   id: string;
   sequence: number;
+  domain: DomainId;
   type: RuntimeEventType;
   timestamp: number;
   source?: RuntimeRef;
@@ -291,21 +350,6 @@ export interface RuntimeEvent {
 
 export type Confidence = 'observed' | 'instrumented' | 'inferred';
 
-export interface GraphNode { ref: RuntimeRef; label: string; data?: SerializedValue }
-export type GraphEdgeKind = 'owns' | 'renders' | 'injects' | 'resolves-to' | 'reads' | 'writes' | 'validates' | 'controls' | 'dispatches' | 'selects' | 'activates' | 'triggers';
-export interface GraphEdge { from: RuntimeRef; to: RuntimeRef; kind: GraphEdgeKind; confidence: Confidence; evidence?: string[] }
-export interface DependencyGraph { nodes: GraphNode[]; edges: GraphEdge[] }
-
-export interface Diagnostic {
-  code: string;
-  severity: 'info' | 'warning' | 'error';
-  title: string;
-  evidence: SerializedValue[];
-  confidence: Confidence;
-  remediation?: string;
-  refs: RuntimeRef[];
-}
-
 export interface Explanation {
   subject: RuntimeRef | string;
   summary: string;
@@ -314,23 +358,8 @@ export interface Explanation {
   limitations: string[];
 }
 
-export interface TraceStep {
-  index: number;
-  event: RuntimeEvent;
-  causedBy?: string;
-  confidence: Confidence;
-}
-export interface TraceResult { startedAt: number; stoppedAt: number; steps: TraceStep[] }
-
-export interface SessionExport {
-  protocolVersion: string;
-  exportedAt: number;
-  snapshots: Snapshot[];
-  events: RuntimeEvent[];
-}
-
 export interface SnapshotOptions {
-  scope?: 'all' | 'current-route';
+  scope?: string;
   compact?: boolean;
   name?: string;
   budget?: Partial<SerializationBudget>;
@@ -345,35 +374,24 @@ export interface SerializationBudget {
   redact: string[];
 }
 
-export type QueryDomain = 'components' | 'directives' | 'providers' | 'signals' | 'forms' | 'signal-forms' | 'fields' | 'stores' | 'routes';
-export interface StructuredQuery { domain: QueryDomain; where?: Record<string, SerializedValue>; limit?: number; cursor?: string; generation?: number }
+export type QueryDomain = DomainId;
+export interface StructuredQuery { domain: QueryDomain; resource?: string; where?: Record<string, SerializedValue>; limit?: number; cursor?: string; generation?: number }
 export interface QueryResult { items: SerializedValue[]; nextCursor?: string; total: number; generation: number }
 
 export interface ProtocolError {
-  code: 'INVALID_REQUEST' | 'NOT_CONNECTED' | 'ANGULAR_NOT_FOUND' | 'PRODUCTION_BUILD' | 'STALE_REFERENCE' | 'NOT_FOUND' | 'UNSUPPORTED' | 'TIMEOUT' | 'BUDGET_EXCEEDED' | 'MUTATION_DENIED' | 'INTERNAL_ERROR';
+  code: 'INVALID_REQUEST' | 'NOT_CONNECTED' | 'ADAPTER_NOT_FOUND' | 'UNAVAILABLE' | 'STALE_REFERENCE' | 'NOT_FOUND' | 'UNSUPPORTED' | 'TIMEOUT' | 'BUDGET_EXCEEDED' | 'INTERNAL_ERROR' | (string & {});
   message: string;
   details?: SerializedValue;
   retryable: boolean;
 }
 
 export interface CommandMap {
-  status: { params: Record<string, never>; result: { connected: boolean; angular: AngularMetadata; capabilities: string[] } };
+  status: { params: Record<string, never>; result: { connected: boolean; protocolVersion: string; adapters: AdapterDescriptor[]; domains: DomainDescriptor[]; capabilities: string[] } };
   snapshot: { params: SnapshotOptions; result: Snapshot };
   query: { params: StructuredQuery; result: QueryResult };
   explain: { params: { subject: RuntimeRef | string; question?: string }; result: Explanation };
-  graph: { params: { scope?: string }; result: DependencyGraph };
-  diagnostics: { params: { scope?: string }; result: Diagnostic[] };
-  diResolve: { params: { token: string; from: RuntimeRef }; result: ResolutionSnapshot };
   events: { params: { after?: number; limit?: number }; result: RuntimeEvent[] };
-  profileStart: { params: { budgetMs?: number }; result: { startedAt: number } };
-  profileStop: { params: Record<string, never>; result: ProfileSnapshot };
-  traceStart: { params: Record<string, never>; result: { startedAt: number; afterSequence: number } };
-  traceStop: { params: Record<string, never>; result: TraceResult };
-  sessionExport: { params: Record<string, never>; result: SessionExport };
-  sessionImport: { params: { session: SessionExport }; result: { snapshots: number; events: number } };
-  replay: { params: { events: RuntimeEvent[]; apply?: boolean }; result: { steps: number; applied: number; dryRun: boolean } };
-  interact: { params: { action: 'click'; target: RuntimeRef | string }; result: { applied: boolean } };
-  mutate: { params: MutationRequest; result: { applied: boolean; auditId: string } };
+  execute: { params: { domain: DomainId; command: string; params?: SerializedValue }; result: SerializedValue };
 }
 
 export type CommandName = keyof CommandMap;
@@ -381,10 +399,3 @@ export interface RpcRequest<C extends CommandName = CommandName> { jsonrpc: '2.0
 export interface RpcSuccess<R = unknown> { jsonrpc: '2.0'; id: string; result: R }
 export interface RpcFailure { jsonrpc: '2.0'; id: string; error: ProtocolError }
 export type RpcResponse<R = unknown> = RpcSuccess<R> | RpcFailure;
-
-export interface MutationRequest {
-  operation: 'signal.set' | 'form.set' | 'ngrx.dispatch' | 'router.navigate';
-  target: RuntimeRef | string;
-  value: SerializedValue;
-  capabilityToken: string;
-}

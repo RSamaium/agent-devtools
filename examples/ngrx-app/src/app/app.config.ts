@@ -1,6 +1,6 @@
 import { provideBrowserGlobalErrorListeners, type ApplicationConfig } from '@angular/core';
 import { provideStore } from '@ngrx/store';
-import { provideNgAgentDevtools } from '@ng-agent/angular';
+import { provideAgentDevtools } from '@agent-devtools/angular';
 import { counterReducer } from './app';
 
-export const appConfig: ApplicationConfig = { providers: [provideBrowserGlobalErrorListeners(), provideStore({ counter: counterReducer }), provideNgAgentDevtools()] };
+export const appConfig: ApplicationConfig = { providers: [provideBrowserGlobalErrorListeners(), provideStore({ counter: counterReducer }), provideAgentDevtools()] };

@@ -1,6 +1,6 @@
-# `@ng-agent/adapter-router`
+# `@agent-devtools/internal-angular-router`
 
-Angular Router runtime adapter for ng-agent.
+Angular Router runtime adapter for agent-devtools.
 
-This package is part of the `@ng-agent/devtools` platform. It uses the versioned `@ng-agent/protocol` data model and is intended for Angular development builds.
+This package is part of the `@agent-devtools/devtools` platform. It uses the versioned `@agent-devtools/protocol` data model and is intended for Angular development builds.
 

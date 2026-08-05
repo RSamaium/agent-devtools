@@ -1,17 +1,7 @@
-import type { FormControlSnapshot, FormSnapshot, SerializedValue, SignalFormSnapshot } from '@ng-agent/protocol';
+import type { FormControlSnapshot, FormSnapshot, SerializedValue, SignalFormSnapshot } from '@agent-devtools/protocol';
 
-export interface SignalFormMigrationField {
-  path: string;
-  initialValue: SerializedValue;
-  disabled: boolean;
-  observedErrorCodes: string[];
-}
-export interface SignalFormMigrationPlan {
-  sourceForm: string;
-  model: SerializedValue;
-  fields: SignalFormMigrationField[];
-  warnings: string[];
-}
+export interface SignalFormMigrationField { path: string; initialValue: SerializedValue; disabled: boolean; observedErrorCodes: string[] }
+export interface SignalFormMigrationPlan { sourceForm: string; model: SerializedValue; fields: SignalFormMigrationField[]; warnings: string[] }
 
 const flattenControls = (control: FormControlSnapshot): FormControlSnapshot[] => [control, ...control.children.flatMap(flattenControls)];
 
@@ -21,10 +11,7 @@ export function createSignalFormMigrationPlan(form: FormSnapshot): SignalFormMig
     sourceForm: form.ref.id,
     model: form.root.rawValue ?? form.root.value,
     fields: fields.map(field => ({ path: field.path, initialValue: field.rawValue ?? field.value, disabled: field.disabled, observedErrorCodes: field.errors.map(error => error.code) })),
-    warnings: [
-      'Validator functions and async behavior cannot be reconstructed from runtime values alone.',
-      'Review cross-field dependencies and conditional fields before replacing the original form.',
-    ],
+    warnings: ['Validator functions and async behavior cannot be reconstructed from runtime values alone.', 'Review cross-field dependencies and conditional fields before replacing the original form.'],
   };
 }
 

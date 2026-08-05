@@ -1,4 +1,4 @@
-import type { RuntimeRef, SerializedValue, Snapshot } from '@ng-agent/protocol';
+import type { RuntimeRef, SerializedValue, Snapshot } from '@agent-devtools/protocol';
 
 export interface DiffEntry {
   operation: 'added' | 'removed' | 'changed';
@@ -18,17 +18,12 @@ const stable = (value: unknown): string => JSON.stringify(value, (_key, item: un
 
 export function diffSnapshots(before: Snapshot, after: Snapshot): SnapshotDiff {
   const entries: DiffEntry[] = [];
-  const domains = ['components', 'directives', 'injectors', 'providers', 'signals', 'forms', 'signalForms', 'stores'] as const;
-  for (const domain of domains) {
-    const previous = new Map(before[domain].map(item => [item.ref.id, item]));
-    const next = new Map(after[domain].map(item => [item.ref.id, item]));
-    for (const [id, item] of previous) {
-      const current = next.get(id);
-      if (!current) entries.push({ operation: 'removed', path: `${domain}.${id}`, before: item as unknown as SerializedValue, ref: item.ref });
-      else if (stable(item) !== stable(current)) entries.push({ operation: 'changed', path: `${domain}.${id}`, before: item as unknown as SerializedValue, after: current as unknown as SerializedValue, ref: current.ref });
-    }
-    for (const [id, item] of next) if (!previous.has(id)) entries.push({ operation: 'added', path: `${domain}.${id}`, after: item as unknown as SerializedValue, ref: item.ref });
+  const domainIds = [...new Set([...Object.keys(before.domains), ...Object.keys(after.domains)])].sort();
+  for (const id of domainIds) {
+    const previous = before.domains[id]; const next = after.domains[id];
+    if (!previous && next) entries.push({ operation: 'added', path: `domains.${id}`, after: next.data as SerializedValue });
+    else if (previous && !next) entries.push({ operation: 'removed', path: `domains.${id}`, before: previous.data as SerializedValue });
+    else if (previous && next && stable(previous.data) !== stable(next.data)) entries.push({ operation: 'changed', path: `domains.${id}`, before: previous.data as SerializedValue, after: next.data as SerializedValue });
   }
-  if (stable(before.router) !== stable(after.router)) entries.push({ operation: 'changed', path: 'router', before: (before.router ?? null) as unknown as SerializedValue, after: (after.router ?? null) as unknown as SerializedValue });
   return { from: before.id, to: after.id, entries };
 }

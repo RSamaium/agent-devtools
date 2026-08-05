@@ -1,12 +1,12 @@
-import { getInstrumentation, serialize, type RuntimeAdapter, type RuntimeContext } from '@ng-agent/runtime';
-import type { RouteSnapshot, SerializedValue, Snapshot } from '@ng-agent/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { RouteSnapshot, SerializedValue, StandardCaptureSnapshot } from '@agent-devtools/protocol';
 interface RouteConfigLike { path?: string; outlet?: string; component?: object; loadChildren?: unknown; loadComponent?: unknown; children?: RouteConfigLike[]; data?: Record<string, unknown> }
 interface RouterLike { url?: string; config?: RouteConfigLike[]; navigated?: boolean; currentNavigation?: unknown }
 interface DebugApi { getDirectives?(element: Element): object[]; getComponent?(element: Element): object | null }
-export class RouterAdapter implements RuntimeAdapter {
+export class RouterAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'router'; readonly priority = 25;
   isAvailable(context: RuntimeContext) { return [...(getInstrumentation(context.window)?.records.values() ?? [])].some(item => item.kind === 'service' && item.name === 'Router') || typeof (context.window as unknown as { ng?: DebugApi }).ng?.getDirectives === 'function'; }
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
     const record = [...(getInstrumentation(context.window)?.records.values() ?? [])].find(item => item.kind === 'service' && item.name === 'Router');
     const router = record?.value as RouterLike | undefined ?? discoverRouter(context);
     if (!router) return;

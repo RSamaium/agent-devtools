@@ -3,6 +3,9 @@ packages:
   - packages/adapters/*
   - examples/*
 
+syncInjectedDepsAfterScripts:
+  - build
+
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true

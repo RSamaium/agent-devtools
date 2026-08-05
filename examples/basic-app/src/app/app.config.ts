@@ -2,16 +2,15 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideNgAgentDevtools } from '@ng-agent/angular';
+import { provideAgentDevtools } from '@agent-devtools/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideNgAgentDevtools({
+    provideAgentDevtools({
       redact: ['account.password'],
       historyLimit: 100,
-      allowRuntimeMutations: false,
       signalForms: { captureSchemas: true, captureValidationEvents: true, captureSubmissions: true },
     })
   ]

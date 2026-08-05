@@ -1,4 +1,4 @@
-import type { SerializedValue, SerializationBudget, Truncation } from '@ng-agent/protocol';
+import type { SerializedValue, SerializationBudget, Truncation } from '@agent-devtools/protocol';
 
 export const DEFAULT_BUDGET: SerializationBudget = {
   maxDepth: 6, maxArrayLength: 100, maxStringLength: 10_000,

@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormField, email, form, required } from '@angular/forms/signals';
 import { Router, RouterOutlet } from '@angular/router';
-import { instrumentRouter, instrumentSignal, instrumentSignalForm, recordNgAgentEvent } from '@ng-agent/angular';
+import { instrumentRouter, instrumentSignal, instrumentSignalForm, recordAgentDevtoolsEvent } from '@agent-devtools/angular';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import { instrumentRouter, instrumentSignal, instrumentSignalForm, recordNgAgent
   styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('ng-agent example');
+  protected readonly title = signal('agent-devtools example');
   protected readonly accountModel = signal({ email: '', password: '' });
   protected readonly accountForm = form(this.accountModel, path => {
     required(path.email, { message: 'Email is required' });
@@ -30,6 +30,6 @@ export class App {
   });
 
   protected submit(): void {
-    recordNgAgentEvent({ type: 'signal-form-submission', source: 'account', value: this.accountModel() });
+    recordAgentDevtoolsEvent({ type: 'signal-form-submission', source: 'account', value: this.accountModel() });
   }
 }

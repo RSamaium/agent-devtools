@@ -1,6 +1,3 @@
-# `@ng-agent/browser`
+# `@agent-devtools/browser`
 
-Playwright and CDP browser driver for ng-agent.
-
-This package is part of the `@ng-agent/devtools` platform. It uses the versioned `@ng-agent/protocol` data model and is intended for Angular development builds.
-
+Generic Playwright/CDP transport. Supply adapter IIFE bundles through `adapterScripts`; use `@agent-devtools/angular/browser` for the reference Angular composition.

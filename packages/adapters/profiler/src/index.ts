@@ -1,10 +1,10 @@
-import { getInstrumentation, type RuntimeAdapter, type RuntimeContext } from '@ng-agent/runtime';
-import type { Snapshot } from '@ng-agent/protocol';
-export class ProfilerAdapter implements RuntimeAdapter {
+import { getInstrumentation, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { StandardCaptureSnapshot } from '@agent-devtools/protocol';
+export class ProfilerAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'profiler'; readonly priority = 90;
   isAvailable() { return typeof performance !== 'undefined'; }
-  capture(snapshot: Snapshot, context: RuntimeContext): void {
-    const records = performance.getEntriesByType('measure').filter(item => item.name.startsWith('ng-agent:')).slice(-100);
+  capture(snapshot: StandardCaptureSnapshot, context: RuntimeContext): void {
+    const records = performance.getEntriesByType('measure').filter(item => item.name.startsWith('agent-devtools:')).slice(-100);
     const instrumented = getInstrumentation(context.window)?.events.filter(item => item.type === 'change-detection-cycle') ?? [];
     if (!records.length && !instrumented.length) return;
     const entries = records.map(item => ({ name: item.name.slice(9), kind: 'cycle' as const, start: item.startTime, duration: item.duration }));

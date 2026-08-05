@@ -1,7 +1,7 @@
 {
-  "name": "@ng-agent/browser", "version": "0.1.0", "description": "Playwright and CDP browser driver for ng-agent", "type": "module", "sideEffects": false,
+  "name": "@agent-devtools/browser", "version": "0.1.0", "description": "Generic Playwright and CDP transport for Agent DevTools", "type": "module", "sideEffects": false,
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }, "./page-script": "./dist/page/page-entry.global.js" }, "files": ["dist"],
-  "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts --format esm --dts --clean && tsup src/page-entry.ts --format iife --global-name NgAgentPage --out-dir dist/page --minify", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
-  "dependencies": { "@ng-agent/core": "workspace:^", "@ng-agent/protocol": "workspace:^", "@ng-agent/runtime": "workspace:^", "@ng-agent/adapter-components": "workspace:^", "@ng-agent/adapter-router": "workspace:^", "@ng-agent/adapter-di": "workspace:^", "@ng-agent/adapter-signals": "workspace:^", "@ng-agent/adapter-forms": "workspace:^", "@ng-agent/adapter-signal-forms": "workspace:^", "@ng-agent/adapter-ngrx-store": "workspace:^", "@ng-agent/adapter-ngrx-signal-store": "workspace:^", "@ng-agent/adapter-profiler": "workspace:^", "playwright-core": "^1.54.2" },
-  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "publishConfig": { "access": "public" }, "license": "MIT"
+  "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts --format esm --dts --clean && tsup src/page-entry.ts --format iife --global-name AgentDevToolsPage --out-dir dist/page --minify", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
+  "dependencies": { "@agent-devtools/core": "workspace:^", "@agent-devtools/protocol": "workspace:^", "@agent-devtools/runtime": "workspace:^", "playwright-core": "^1.54.2" },
+  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "license": "MIT"
 }
