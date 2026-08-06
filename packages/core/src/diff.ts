@@ -1,4 +1,4 @@
-import type { RuntimeRef, SerializedValue, Snapshot } from '@agent-devtools/protocol';
+import type { RuntimeRef, SerializedValue, Snapshot } from '@adp-devtools/protocol';
 
 export interface DiffEntry {
   operation: 'added' | 'removed' | 'changed';

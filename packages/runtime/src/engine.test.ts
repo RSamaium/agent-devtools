@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { CommandName, RpcRequest } from '@agent-devtools/protocol';
+import type { CommandName, RpcRequest } from '@adp-devtools/protocol';
 import type { RuntimeAdapter } from './adapter.js';
 import { RuntimeEngine } from './engine.js';
 

@@ -1,4 +1,4 @@
-import { installRuntimeBridge } from '@agent-devtools/runtime';
+import { installRuntimeBridge } from '@adp-devtools/runtime';
 import { pixiRuntimeAdapter } from './runtime.js';
 
 const target = typeof window === 'undefined' ? undefined : window as Window & { __AGENT_DEVTOOLS_PIXI__?: boolean };

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Store, createAction, createReducer, on } from '@ngrx/store';
-import { instrumentStore, recordAgentDevtoolsEvent } from '@agent-devtools/angular';
+import { instrumentStore, recordAgentDevtoolsEvent } from '@adp-devtools/angular';
 
 export interface AppState { counter: number }
 export const increment = createAction('[Counter] Increment');

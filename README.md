@@ -6,7 +6,7 @@ Agent DevTools is a platform that lets an AI agent observe, understand and expla
 Application -> Adapter -> ADP -> Agent DevTools -> CLI / MCP / SDK / IDE
 ```
 
-This repository is under local development. The `@agent-devtools/*` package names describe the target workspace architecture; no npm publication is part of the current milestone.
+The public packages use the `@adp-devtools` npm scope and share a common version.
 
 ## V1 development scope
 
@@ -23,36 +23,43 @@ Graph, diagnostics, replay, application interaction, mutation and dynamic third-
 ```bash
 pnpm install
 pnpm build
-pnpm --filter @agent-devtools/browser exec playwright-core install chromium
+pnpm --filter @adp-devtools/browser exec playwright-core install chromium
 pnpm --filter basic-app start
+```
+
+For normal use, install the CLI globally and let it install Chromium:
+
+```bash
+npm install --global @adp-devtools/cli
+agent-devtools install chromium
 ```
 
 In another terminal:
 
 ```bash
-pnpm --filter @agent-devtools/cli exec agent-devtools open http://localhost:4200
-pnpm --filter @agent-devtools/cli exec agent-devtools status --json
-pnpm --filter @agent-devtools/cli exec agent-devtools snapshot --json
-pnpm --filter @agent-devtools/cli exec agent-devtools query components --resource components name=App --json
-pnpm --filter @agent-devtools/cli exec agent-devtools close
+pnpm --filter @adp-devtools/cli exec agent-devtools open http://localhost:4200
+pnpm --filter @adp-devtools/cli exec agent-devtools status --json
+pnpm --filter @adp-devtools/cli exec agent-devtools snapshot --json
+pnpm --filter @adp-devtools/cli exec agent-devtools query components --resource components name=App --json
+pnpm --filter @adp-devtools/cli exec agent-devtools close
 ```
 
 The Angular-oriented commands are adapter contributions:
 
 ```bash
-pnpm --filter @agent-devtools/cli exec agent-devtools components tree --json
-pnpm --filter @agent-devtools/cli exec agent-devtools router active --json
-pnpm --filter @agent-devtools/cli exec agent-devtools di tree --json
-pnpm --filter @agent-devtools/cli exec agent-devtools signals list --json
-pnpm --filter @agent-devtools/cli exec agent-devtools signal-forms list --json
+pnpm --filter @adp-devtools/cli exec agent-devtools components tree --json
+pnpm --filter @adp-devtools/cli exec agent-devtools router active --json
+pnpm --filter @adp-devtools/cli exec agent-devtools di tree --json
+pnpm --filter @adp-devtools/cli exec agent-devtools signals list --json
+pnpm --filter @adp-devtools/cli exec agent-devtools signal-forms list --json
 ```
 
 PixiJS applications registered with `@pixi/devtools` expose dedicated read-only commands:
 
 ```bash
-pnpm --filter @agent-devtools/cli exec agent-devtools scene tree --json
-pnpm --filter @agent-devtools/cli exec agent-devtools rendering info --json
-pnpm --filter @agent-devtools/cli exec agent-devtools assets textures --json
+pnpm --filter @adp-devtools/cli exec agent-devtools scene tree --json
+pnpm --filter @adp-devtools/cli exec agent-devtools rendering info --json
+pnpm --filter @adp-devtools/cli exec agent-devtools assets textures --json
 ```
 
 ## Angular instrumentation
@@ -60,7 +67,7 @@ pnpm --filter @agent-devtools/cli exec agent-devtools assets textures --json
 Runtime discovery needs no application change. Optional instrumentation provides stable identities, histories, correlations and redaction:
 
 ```ts
-import { provideAgentDevtools } from '@agent-devtools/angular';
+import { provideAgentDevtools } from '@adp-devtools/angular';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -82,7 +89,7 @@ bootstrapApplication(AppComponent, {
 Use the Angular composition for the reference adapter:
 
 ```ts
-import { connectAngularBrowser } from '@agent-devtools/angular/browser';
+import { connectAngularBrowser } from '@adp-devtools/angular/browser';
 
 const client = await connectAngularBrowser({
   url: 'http://localhost:4200',
@@ -103,25 +110,25 @@ try {
 }
 ```
 
-`@agent-devtools/browser` remains adapter-neutral and accepts adapter bundles through `adapterScripts`.
+`@adp-devtools/browser` remains adapter-neutral and accepts adapter bundles through `adapterScripts`.
 
-PixiJS-only consumers can use `connectPixiBrowser()` from `@agent-devtools/pixi/browser`. CLI and MCP load the Angular and PixiJS bundles together and activate only the adapters detected on the page.
+PixiJS-only consumers can use `connectPixiBrowser()` from `@adp-devtools/pixi/browser`. CLI and MCP load the Angular and PixiJS bundles together and activate only the adapters detected on the page.
 
 ## Packages
 
 | Package | Responsibility |
 |---|---|
-| `@agent-devtools/protocol` | ADP types, schemas and version policy |
-| `@agent-devtools/core` | Generic client, transport, query and diff helpers |
-| `@agent-devtools/runtime` | Adapter host, sessions, snapshots, events and serialization |
-| `@agent-devtools/browser` | Generic Playwright/CDP transport |
-| `@agent-devtools/angular` | Angular adapter, browser composition and instrumentation |
-| `@agent-devtools/pixi` | PixiJS scene graph, rendering and texture adapter |
-| `@agent-devtools/cli` | Generic commands plus Angular and PixiJS contributions |
-| `@agent-devtools/mcp` | `adp_*`, Angular and PixiJS tools |
-| `@agent-devtools/testing` | Generic fixtures and adapter test harnesses |
+| `@adp-devtools/protocol` | ADP types, schemas and version policy |
+| `@adp-devtools/core` | Generic client, transport, query and diff helpers |
+| `@adp-devtools/runtime` | Adapter host, sessions, snapshots, events and serialization |
+| `@adp-devtools/browser` | Generic Playwright/CDP transport |
+| `@adp-devtools/angular` | Angular adapter, browser composition and instrumentation |
+| `@adp-devtools/pixi` | PixiJS scene graph, rendering and texture adapter |
+| `@adp-devtools/cli` | Generic commands plus Angular and PixiJS contributions |
+| `@adp-devtools/mcp` | `adp_*`, Angular and PixiJS tools |
+| `@adp-devtools/testing` | Generic fixtures and adapter test harnesses |
 
-The packages under `packages/adapters/` are private implementation modules aggregated by `@agent-devtools/angular`.
+The packages under `packages/adapters/` are private implementation modules aggregated by `@adp-devtools/angular`.
 
 ## Safety
 
@@ -142,6 +149,7 @@ The packages under `packages/adapters/` are private implementation modules aggre
 - [Implementation notes](docs/features/agent-devtools-platform/implementation.md)
 - [Public API and migration](docs/features/agent-devtools-platform/public-api.md)
 - [Security policy](SECURITY.md)
+- [Release process](docs/releasing.md)
 
 ## Validation
 

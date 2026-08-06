@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Snapshot } from '@agent-devtools/protocol';
+import type { Snapshot } from '@adp-devtools/protocol';
 import { diffSnapshots } from './diff.js';
 
 const base = (id: string): Snapshot => ({ id, generation: 1, runtime: { environment: 'web', capturedAt: 1 }, adapters: [], domains: {}, warnings: [], truncations: [] });

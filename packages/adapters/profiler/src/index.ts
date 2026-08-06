@@ -1,5 +1,5 @@
-import { getInstrumentation, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
-import type { StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
+import type { StandardCaptureSnapshot } from '@adp-devtools/protocol';
 export class ProfilerAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'profiler'; readonly priority = 90;
   isAvailable() { return typeof performance !== 'undefined'; }

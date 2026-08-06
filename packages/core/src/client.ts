@@ -1,5 +1,5 @@
-import type { CommandMap, CommandName, Explanation, QueryResult, RuntimeEvent, SerializedValue, Snapshot, SnapshotOptions, StructuredQuery } from '@agent-devtools/protocol';
-import { PROTOCOL_VERSION } from '@agent-devtools/protocol';
+import type { CommandMap, CommandName, Explanation, QueryResult, RuntimeEvent, SerializedValue, Snapshot, SnapshotOptions, StructuredQuery } from '@adp-devtools/protocol';
+import { PROTOCOL_VERSION } from '@adp-devtools/protocol';
 import type { Transport } from './transport.js';
 import { ProtocolRequestError } from './transport.js';
 

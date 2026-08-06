@@ -1,5 +1,5 @@
-import type { RuntimeRef, StandardCaptureSnapshot } from '@agent-devtools/protocol';
-import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { RuntimeRef, StandardCaptureSnapshot } from '@adp-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
 
 interface AngularDebugApi { getComponent?(element: Element): object | null }
 type StoreObject = Record<string, unknown>;

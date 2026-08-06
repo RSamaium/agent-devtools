@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Snapshot } from '@agent-devtools/protocol';
+import type { Snapshot } from '@adp-devtools/protocol';
 import { querySnapshot } from './query.js';
 
 const snapshot: Snapshot = {

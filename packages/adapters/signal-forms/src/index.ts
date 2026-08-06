@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
-import type { FormErrorSnapshot, SignalFormFieldSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
+import type { FormErrorSnapshot, SignalFormFieldSnapshot, StandardCaptureSnapshot } from '@adp-devtools/protocol';
 
 type Readable<T> = T | (() => T);
 interface FieldStateLike { value?: Readable<unknown>; valid?: Readable<boolean>; invalid?: Readable<boolean>; pending?: Readable<boolean>; submitting?: Readable<boolean>; disabled?: Readable<boolean>; dirty?: Readable<boolean>; touched?: Readable<boolean>; errors?: Readable<Array<{ kind?: string; code?: string; message?: string; source?: string; dependsOn?: string[] }>> }

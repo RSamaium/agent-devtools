@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideAgentDevtools } from '@agent-devtools/angular';
+import { provideAgentDevtools } from '@adp-devtools/angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,4 +1,4 @@
-import type { QueryResult, SerializedValue, Snapshot, StructuredQuery } from '@agent-devtools/protocol';
+import type { QueryResult, SerializedValue, Snapshot, StructuredQuery } from '@adp-devtools/protocol';
 
 function getPath(value: unknown, path: string): unknown {
   return path.split('.').reduce<unknown>((current, segment) => current && typeof current === 'object' ? (current as Record<string, unknown>)[segment] : undefined, value);

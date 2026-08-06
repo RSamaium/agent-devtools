@@ -1,9 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { AgentDevToolsClient, type Transport } from '@agent-devtools/core';
+import { AgentDevToolsClient, type Transport } from '@adp-devtools/core';
 import type { Browser, Page } from 'playwright-core';
 import { chromium, firefox, webkit } from 'playwright-core';
-import type { CommandMap, CommandName, RpcRequest, RpcResponse } from '@agent-devtools/protocol';
+import type { CommandMap, CommandName, RpcRequest, RpcResponse } from '@adp-devtools/protocol';
 
 export interface BrowserConnectOptions {
   url?: string;

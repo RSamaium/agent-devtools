@@ -5,7 +5,7 @@ Agent DevTools lets an AI agent observe, understand and explain an application r
 ```text
 Application runtime
         ↓
-Adapter (`@agent-devtools/angular` or `@agent-devtools/pixi`)
+Adapter (`@adp-devtools/angular` or `@adp-devtools/pixi`)
         ↓
 ADP runtime host (`window.__AGENT_DEVTOOLS__`)
         ↓

@@ -1,7 +1,12 @@
 {
-  "name": "@agent-devtools/browser", "version": "0.1.0", "description": "Generic Playwright and CDP transport for Agent DevTools", "type": "module", "sideEffects": false,
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }, "./page-script": "./dist/page/page-entry.global.js" }, "files": ["dist"],
+  "name": "@adp-devtools/browser", "version": "0.1.0", "description": "Generic Playwright and CDP transport for Agent DevTools", "type": "module", "sideEffects": false,
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }, "./page-script": "./dist/page/page-entry.global.js" }, "files": ["dist", "CHANGELOG.md"],
   "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts --format esm --dts --clean && tsup src/page-entry.ts --format iife --global-name AgentDevToolsPage --out-dir dist/page --minify", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
-  "dependencies": { "@agent-devtools/core": "workspace:^", "@agent-devtools/protocol": "workspace:^", "@agent-devtools/runtime": "workspace:^", "playwright-core": "^1.54.2" },
-  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "license": "MIT"
+  "dependencies": { "@adp-devtools/core": "workspace:^", "@adp-devtools/protocol": "workspace:^", "@adp-devtools/runtime": "workspace:^", "playwright-core": "^1.54.2" },
+  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" },
+  "repository": { "type": "git", "url": "git+https://github.com/RSamaium/agent-devtools.git", "directory": "packages/browser" },
+  "homepage": "https://github.com/RSamaium/agent-devtools#readme",
+  "bugs": "https://github.com/RSamaium/agent-devtools/issues",
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
+  "license": "MIT"
 }

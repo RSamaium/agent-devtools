@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { FormSnapshot, SignalFormSnapshot } from '@agent-devtools/protocol';
+import type { FormSnapshot, SignalFormSnapshot } from '@adp-devtools/protocol';
 import { createSignalFormMigrationPlan, generateSignalFormAssertions } from './assistance.js';
 
 const ref = (id: string, kind: 'form' | 'field') => ({ id, domain: 'forms', kind, generation: 1 } as const);

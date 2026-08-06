@@ -1,6 +1,6 @@
 # Angular reference adapter
 
-`@agent-devtools/angular` is the first official ADP adapter and the reference implementation for multi-domain capture.
+`@adp-devtools/angular` is the first official ADP adapter and the reference implementation for multi-domain capture.
 
 It implements:
 

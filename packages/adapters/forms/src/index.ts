@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
-import type { FormControlSnapshot, FormErrorSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
+import type { FormControlSnapshot, FormErrorSnapshot, StandardCaptureSnapshot } from '@adp-devtools/protocol';
 
 interface AbstractControlLike { value?: unknown; valid?: boolean; invalid?: boolean; pending?: boolean; disabled?: boolean; dirty?: boolean; touched?: boolean; errors?: Record<string, unknown> | null; controls?: Record<string, AbstractControlLike> | AbstractControlLike[]; getRawValue?(): unknown }
 const errorsOf = (errors: Record<string, unknown> | null | undefined, context: RuntimeContext): FormErrorSnapshot[] => Object.entries(errors ?? {}).map(([code, value]) => ({ code, value: serialize(value, context.options.budget).value }));

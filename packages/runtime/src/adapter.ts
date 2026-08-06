@@ -1,4 +1,4 @@
-import type { AdapterDescriptor, DomainSnapshot, Explanation, RuntimeEvent, SerializedValue, SnapshotOptions, Truncation, RuntimeWarning } from '@agent-devtools/protocol';
+import type { AdapterDescriptor, DomainSnapshot, Explanation, RuntimeEvent, SerializedValue, SnapshotOptions, Truncation, RuntimeWarning } from '@adp-devtools/protocol';
 import type { ReferenceRegistry } from './refs.js';
 
 export interface RuntimeContext {
@@ -21,7 +21,7 @@ export interface RuntimeAdapter {
   isAvailable(context: RuntimeContext): boolean;
   capture(context: RuntimeContext): AdapterCapture | Promise<AdapterCapture>;
   execute?(domain: string, command: string, params: SerializedValue | undefined, context: RuntimeContext): SerializedValue | Promise<SerializedValue>;
-  explain?(subject: import('@agent-devtools/protocol').RuntimeRef | string, question: string | undefined, context: RuntimeContext): Explanation | Promise<Explanation>;
+  explain?(subject: import('@adp-devtools/protocol').RuntimeRef | string, question: string | undefined, context: RuntimeContext): Explanation | Promise<Explanation>;
   dispose?(): void | Promise<void>;
 }
 

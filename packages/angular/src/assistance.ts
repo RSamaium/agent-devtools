@@ -1,4 +1,4 @@
-import type { FormControlSnapshot, FormSnapshot, SerializedValue, SignalFormSnapshot } from '@agent-devtools/protocol';
+import type { FormControlSnapshot, FormSnapshot, SerializedValue, SignalFormSnapshot } from '@adp-devtools/protocol';
 
 export interface SignalFormMigrationField { path: string; initialValue: SerializedValue; disabled: boolean; observedErrorCodes: string[] }
 export interface SignalFormMigrationPlan { sourceForm: string; model: SerializedValue; fields: SignalFormMigrationField[]; warnings: string[] }

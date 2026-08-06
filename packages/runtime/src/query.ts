@@ -1,4 +1,4 @@
-import type { QueryResult, SerializedValue, Snapshot, StructuredQuery } from '@agent-devtools/protocol';
+import type { QueryResult, SerializedValue, Snapshot, StructuredQuery } from '@adp-devtools/protocol';
 
 const getPath = (value: unknown, path: string): unknown => path.split('.').reduce<unknown>((current, segment) => current && typeof current === 'object' ? (current as Record<string, unknown>)[segment] : undefined, value);
 const matches = (item: unknown, where: Record<string, SerializedValue>): boolean => Object.entries(where).every(([path, expected]) => {

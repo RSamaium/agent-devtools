@@ -2,7 +2,7 @@
 
 ## Migration
 
-This is an intentional pre-publication break. Workspace imports move from `@ng-agent/*` to `@agent-devtools/*`, `NgAgentClient` becomes `AgentDevToolsClient`, the page bridge becomes `window.__AGENT_DEVTOOLS__`, and the CLI becomes `agent-devtools`. There are no compatibility aliases.
+This is an intentional pre-publication break. Workspace imports move from `@ng-agent/*` to `@adp-devtools/*`, `NgAgentClient` becomes `AgentDevToolsClient`, the page bridge becomes `window.__AGENT_DEVTOOLS__`, and the CLI becomes `agent-devtools`. There are no compatibility aliases.
 
 Angular consumers replace `provideNgAgentDevtools()` with `provideAgentDevtools()` and use `connectAngularBrowser()` when they want the reference adapter loaded automatically.
 
@@ -15,8 +15,8 @@ The V1 `CommandMap` exposes `status`, `snapshot`, `query`, `events`, `explain` a
 ## SDK
 
 ```ts
-import { connectAngularBrowser } from '@agent-devtools/angular/browser';
-import type { RuntimeRef } from '@agent-devtools/protocol';
+import { connectAngularBrowser } from '@adp-devtools/angular/browser';
+import type { RuntimeRef } from '@adp-devtools/protocol';
 
 const client = await connectAngularBrowser({ url: 'http://localhost:4200' });
 const status = await client.status();
@@ -31,7 +31,7 @@ const explanation = await client.explain(component.ref);
 await client.close();
 ```
 
-Generic browser consumers use `connectBrowser({ adapterScripts })`. Adapter authors implement `RuntimeAdapter` from `@agent-devtools/runtime`; custom domain IDs must be namespaced.
+Generic browser consumers use `connectBrowser({ adapterScripts })`. Adapter authors implement `RuntimeAdapter` from `@adp-devtools/runtime`; custom domain IDs must be namespaced.
 
 ## CLI and MCP
 

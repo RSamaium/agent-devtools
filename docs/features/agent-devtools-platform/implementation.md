@@ -8,10 +8,10 @@ No package was published and no remote repository, release or tag was changed. G
 
 ## Main implementation
 
-- `@agent-devtools/protocol` now owns generic adapter, domain, snapshot, reference, query, event and command contracts.
-- `@agent-devtools/runtime` is an adapter host with no framework dependency. It validates protocol ranges and namespaced domains.
-- `@agent-devtools/angular` aggregates private Angular capture modules, maps them to standard domains and owns Angular explanations and domain commands.
-- `@agent-devtools/browser` injects the generic bridge plus caller-supplied adapter scripts; the Angular browser entry composes both.
+- `@adp-devtools/protocol` now owns generic adapter, domain, snapshot, reference, query, event and command contracts.
+- `@adp-devtools/runtime` is an adapter host with no framework dependency. It validates protocol ranges and namespaced domains.
+- `@adp-devtools/angular` aggregates private Angular capture modules, maps them to standard domains and owns Angular explanations and domain commands.
+- `@adp-devtools/browser` injects the generic bridge plus caller-supplied adapter scripts; the Angular browser entry composes both.
 - CLI and MCP expose generic ADP operations plus Angular contributions.
 - Angular form migration and assertion helpers moved out of the generic core into the Angular package.
 

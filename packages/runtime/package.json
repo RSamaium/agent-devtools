@@ -1,17 +1,21 @@
 {
-  "name": "@agent-devtools/runtime",
+  "name": "@adp-devtools/runtime",
   "version": "0.1.0",
   "description": "Framework-neutral in-page ADP runtime and adapter host",
   "type": "module",
   "sideEffects": false,
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }, "./browser-script": "./dist/browser/browser-entry.global.js" },
-  "files": ["dist"],
+  "files": ["dist", "CHANGELOG.md"],
   "scripts": { "prepack": "pnpm build",
     "build": "tsup src/index.ts --format esm --dts --clean && tsup src/browser-entry.ts --format iife --global-name AgentDevToolsRuntime --out-dir dist/browser --minify",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist"
   },
-  "dependencies": { "@agent-devtools/protocol": "workspace:^" },
+  "dependencies": { "@adp-devtools/protocol": "workspace:^" },
   "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:", "vitest": "^3.2.4" },
+  "repository": { "type": "git", "url": "git+https://github.com/RSamaium/agent-devtools.git", "directory": "packages/runtime" },
+  "homepage": "https://github.com/RSamaium/agent-devtools#readme",
+  "bugs": "https://github.com/RSamaium/agent-devtools/issues",
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
   "license": "MIT"
 }
