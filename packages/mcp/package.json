@@ -8,5 +8,5 @@
   "homepage": "https://github.com/RSamaium/agent-devtools#readme",
   "bugs": "https://github.com/RSamaium/agent-devtools/issues",
   "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
-  "license": "MIT", "engines": { "node": ">=20.19.0" }
+  "license": "MIT", "engines": { "node": ">=22.14.0" }
 }
