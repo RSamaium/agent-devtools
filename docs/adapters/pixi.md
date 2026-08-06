@@ -1,6 +1,6 @@
 # PixiJS adapter
 
-`@agent-devtools/pixi` observes PixiJS 8 applications through the standard ADP `scene-graph`, `rendering` and `assets` domains. It does not claim `application`, so PixiJS and Angular can be inspected in the same page.
+`@adp-devtools/pixi` observes PixiJS 8 applications through the standard ADP `scene-graph`, `rendering` and `assets` domains. It does not claim `application`, so PixiJS and Angular can be inspected in the same page.
 
 ## Registration
 

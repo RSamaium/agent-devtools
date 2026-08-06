@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
-import type { StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
+import type { StandardCaptureSnapshot } from '@adp-devtools/protocol';
 export class NgrxStoreAdapter implements CaptureAdapter<StandardCaptureSnapshot> {
   readonly name = 'ngrx-store'; readonly priority = 60;
   isAvailable(context: RuntimeContext) { return [...(getInstrumentation(context.window)?.records.values() ?? [])].some(item => item.kind === 'store' && item.metadata?.['type'] === 'ngrx'); }

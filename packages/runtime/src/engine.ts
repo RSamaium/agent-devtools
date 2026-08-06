@@ -1,8 +1,8 @@
 import type {
   CommandMap, CommandName, Explanation, ProtocolError, RpcRequest, RpcResponse,
   RuntimeEvent, RuntimeRef, RuntimeWarning, Snapshot, SnapshotOptions,
-} from '@agent-devtools/protocol';
-import { domainIdSchema, PROTOCOL_VERSION } from '@agent-devtools/protocol';
+} from '@adp-devtools/protocol';
+import { domainIdSchema, PROTOCOL_VERSION } from '@adp-devtools/protocol';
 import type { RuntimeAdapter, RuntimeContext } from './adapter.js';
 import { querySnapshot } from './query.js';
 import { ReferenceRegistry } from './refs.js';
@@ -107,7 +107,7 @@ export class RuntimeEngine {
     return { subject, summary: typeof subject === 'string' ? subject : `${subject.kind} ${subject.id}`, facts: [], evidence: [], limitations: ['No active adapter can explain this subject.'] };
   }
 
-  private async execute(domain: string, command: string, params?: import('@agent-devtools/protocol').SerializedValue) {
+  private async execute(domain: string, command: string, params?: import('@adp-devtools/protocol').SerializedValue) {
     const snapshot = await this.ensureSnapshot();
     const context = this.contextFor(this.latestRefs ?? new ReferenceRegistry(snapshot.generation), {}, snapshot.warnings);
     const adapter = this.adapters.find(candidate => candidate.isAvailable(context) && candidate.execute && candidate.descriptor.domains.some(item => item.id === domain));

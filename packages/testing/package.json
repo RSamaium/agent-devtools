@@ -1,7 +1,12 @@
 {
-  "name": "@agent-devtools/testing", "version": "0.1.0", "description": "Fixtures, harness and assertions for agent-devtools adapters", "type": "module", "sideEffects": false,
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }, "files": ["dist"],
+  "name": "@adp-devtools/testing", "version": "0.1.0", "description": "Fixtures, harness and assertions for agent-devtools adapters", "type": "module", "sideEffects": false,
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } }, "files": ["dist", "CHANGELOG.md"],
   "scripts": { "prepack": "pnpm build", "build": "tsup src/index.ts --format esm --dts --clean", "typecheck": "tsc --noEmit", "clean": "rm -rf dist" },
-  "dependencies": { "@agent-devtools/core": "workspace:^", "@agent-devtools/protocol": "workspace:^" },
-  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" }, "license": "MIT"
+  "dependencies": { "@adp-devtools/core": "workspace:^", "@adp-devtools/protocol": "workspace:^" },
+  "devDependencies": { "tsup": "^8.5.0", "typescript": "catalog:" },
+  "repository": { "type": "git", "url": "git+https://github.com/RSamaium/agent-devtools.git", "directory": "packages/testing" },
+  "homepage": "https://github.com/RSamaium/agent-devtools#readme",
+  "bugs": "https://github.com/RSamaium/agent-devtools/issues",
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
+  "license": "MIT"
 }

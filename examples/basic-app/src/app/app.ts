@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormField, email, form, required } from '@angular/forms/signals';
 import { Router, RouterOutlet } from '@angular/router';
-import { instrumentRouter, instrumentSignal, instrumentSignalForm, recordAgentDevtoolsEvent } from '@agent-devtools/angular';
+import { instrumentRouter, instrumentSignal, instrumentSignalForm, recordAgentDevtoolsEvent } from '@adp-devtools/angular';
 
 @Component({
   selector: 'app-root',

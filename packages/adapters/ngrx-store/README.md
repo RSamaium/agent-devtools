@@ -1,6 +1,6 @@
-# `@agent-devtools/internal-angular-ngrx-store`
+# `@adp-devtools/internal-angular-ngrx-store`
 
 NgRx Store runtime adapter for agent-devtools.
 
-This package is part of the `@agent-devtools/devtools` platform. It uses the versioned `@agent-devtools/protocol` data model and is intended for Angular development builds.
+This package is part of the `@adp-devtools/devtools` platform. It uses the versioned `@adp-devtools/protocol` data model and is intended for Angular development builds.
 

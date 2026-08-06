@@ -1,5 +1,5 @@
-import type { CaptureAdapter, RuntimeContext } from '@agent-devtools/runtime';
-import type { PropertySnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import type { CaptureAdapter, RuntimeContext } from '@adp-devtools/runtime';
+import type { PropertySnapshot, StandardCaptureSnapshot } from '@adp-devtools/protocol';
 export { AngularDiscoveryAdapter } from './discovery.js';
 
 interface Definition { onPush?: boolean; inputs?: Record<string, unknown>; outputs?: Record<string, unknown> }

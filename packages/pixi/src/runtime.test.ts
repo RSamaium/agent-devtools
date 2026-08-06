@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { CommandName, RpcRequest, Snapshot } from '@agent-devtools/protocol';
-import { RuntimeEngine } from '@agent-devtools/runtime';
+import type { CommandName, RpcRequest, Snapshot } from '@adp-devtools/protocol';
+import { RuntimeEngine } from '@adp-devtools/runtime';
 import type { PixiAssetsSnapshot, PixiRenderingSnapshot, PixiSceneGraphSnapshot } from './types.js';
 import { pixiRuntimeAdapter } from './runtime.js';
 

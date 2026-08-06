@@ -1,20 +1,20 @@
 import type {
   AdapterCapture, CaptureAdapter, RuntimeAdapter, RuntimeContext,
-} from '@agent-devtools/runtime';
+} from '@adp-devtools/runtime';
 import type {
   AdapterDescriptor, ApplicationMetadata, Explanation, ProfileSnapshot, ResolutionSnapshot,
   RuntimeRef, SerializedValue, StandardCaptureSnapshot,
-} from '@agent-devtools/protocol';
-import { getInstrumentation, serialize } from '@agent-devtools/runtime';
-import { AngularDiscoveryAdapter, componentsAdapter } from '@agent-devtools/internal-angular-components';
-import { routerAdapter } from '@agent-devtools/internal-angular-router';
-import { diAdapter } from '@agent-devtools/internal-angular-di';
-import { signalsAdapter } from '@agent-devtools/internal-angular-signals';
-import { formsAdapter } from '@agent-devtools/internal-angular-forms';
-import { signalFormsAdapter } from '@agent-devtools/internal-angular-signal-forms';
-import { ngrxStoreAdapter } from '@agent-devtools/internal-angular-ngrx-store';
-import { ngrxSignalStoreAdapter } from '@agent-devtools/internal-angular-ngrx-signal-store';
-import { profilerAdapter } from '@agent-devtools/internal-angular-profiler';
+} from '@adp-devtools/protocol';
+import { getInstrumentation, serialize } from '@adp-devtools/runtime';
+import { AngularDiscoveryAdapter, componentsAdapter } from '@adp-devtools/internal-angular-components';
+import { routerAdapter } from '@adp-devtools/internal-angular-router';
+import { diAdapter } from '@adp-devtools/internal-angular-di';
+import { signalsAdapter } from '@adp-devtools/internal-angular-signals';
+import { formsAdapter } from '@adp-devtools/internal-angular-forms';
+import { signalFormsAdapter } from '@adp-devtools/internal-angular-signal-forms';
+import { ngrxStoreAdapter } from '@adp-devtools/internal-angular-ngrx-store';
+import { ngrxSignalStoreAdapter } from '@adp-devtools/internal-angular-ngrx-signal-store';
+import { profilerAdapter } from '@adp-devtools/internal-angular-profiler';
 
 const domain = (id: string, capabilities: string[], commands?: AdapterDescriptor['domains'][number]['commands']) => ({ id, version: '1.0.0', capabilities, ...(commands ? { commands } : {}) });
 

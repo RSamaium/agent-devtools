@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideStore } from '@ngrx/store';
-import { provideAgentDevtools } from '@agent-devtools/angular';
+import { provideAgentDevtools } from '@adp-devtools/angular';
 import { App, counterReducer } from './app';
 
 it('creates the NgRx fixture', async () => {

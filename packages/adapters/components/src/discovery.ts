@@ -1,5 +1,5 @@
-import type { ComponentSnapshot, DirectiveSnapshot, PropertySnapshot, SignalSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
-import { serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
+import type { ComponentSnapshot, DirectiveSnapshot, PropertySnapshot, SignalSnapshot, StandardCaptureSnapshot } from '@adp-devtools/protocol';
+import { serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
 
 interface AngularDebugApi {
   getComponent?(element: Element): object | null;

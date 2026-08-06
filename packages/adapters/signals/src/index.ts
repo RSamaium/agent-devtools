@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
-import type { RuntimeKind, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
+import type { RuntimeKind, StandardCaptureSnapshot } from '@adp-devtools/protocol';
 
 interface DebugSignalNode { kind: string; id: string; epoch?: number; label?: string; value?: unknown; debuggableFn?: () => unknown }
 interface DebugSignalGraph { nodes: DebugSignalNode[]; edges: Array<{ consumer: number; producer: number }> }

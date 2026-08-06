@@ -1,5 +1,5 @@
 import { Component, Injectable, InjectionToken, inject } from '@angular/core';
-import { instrumentService } from '@agent-devtools/angular';
+import { instrumentService } from '@adp-devtools/angular';
 
 export const API_URL = new InjectionToken<string>('API_URL');
 

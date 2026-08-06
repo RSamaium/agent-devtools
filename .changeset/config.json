@@ -1,0 +1,37 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.3.1/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    { "repo": "RSamaium/agent-devtools" }
+  ],
+  "commit": false,
+  "fixed": [
+    [
+      "@adp-devtools/protocol",
+      "@adp-devtools/core",
+      "@adp-devtools/runtime",
+      "@adp-devtools/browser",
+      "@adp-devtools/angular",
+      "@adp-devtools/pixi",
+      "@adp-devtools/testing",
+      "@adp-devtools/cli",
+      "@adp-devtools/mcp"
+    ]
+  ],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "master",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "@adp-devtools/internal-angular-components",
+    "@adp-devtools/internal-angular-router",
+    "@adp-devtools/internal-angular-di",
+    "@adp-devtools/internal-angular-signals",
+    "@adp-devtools/internal-angular-forms",
+    "@adp-devtools/internal-angular-signal-forms",
+    "@adp-devtools/internal-angular-ngrx-store",
+    "@adp-devtools/internal-angular-ngrx-signal-store",
+    "@adp-devtools/internal-angular-profiler"
+  ],
+  "privatePackages": { "version": false, "tag": false }
+}

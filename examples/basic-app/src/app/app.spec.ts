@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { App } from './app';
-import { provideAgentDevtools } from '@agent-devtools/angular';
+import { provideAgentDevtools } from '@adp-devtools/angular';
 
 describe('App', () => {
   beforeEach(async () => {

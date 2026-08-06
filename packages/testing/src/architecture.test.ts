@@ -10,7 +10,7 @@ describe('generic package boundaries', () => {
       const directory = join(process.cwd(), 'packages', name, 'src');
       for (const file of (await readdir(directory)).filter(file => file.endsWith('.ts') && file !== 'architecture.test.ts')) {
         const source = await readFile(join(directory, file), 'utf8');
-        expect(source, `${name}/${file}`).not.toMatch(/from ['"](?:@angular\/|@agent-devtools\/internal-angular-)/);
+        expect(source, `${name}/${file}`).not.toMatch(/from ['"](?:@angular\/|@adp-devtools\/internal-angular-)/);
       }
     }
   });

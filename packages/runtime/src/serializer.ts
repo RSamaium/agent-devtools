@@ -1,4 +1,4 @@
-import type { SerializedValue, SerializationBudget, Truncation } from '@agent-devtools/protocol';
+import type { SerializedValue, SerializationBudget, Truncation } from '@adp-devtools/protocol';
 
 export const DEFAULT_BUDGET: SerializationBudget = {
   maxDepth: 6, maxArrayLength: 100, maxStringLength: 10_000,

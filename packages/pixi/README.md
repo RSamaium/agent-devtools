@@ -1,4 +1,4 @@
-# `@agent-devtools/pixi`
+# `@adp-devtools/pixi`
 
 Read-only PixiJS 8 adapter for Agent DevTools. It captures the scene graph, renderer metadata and managed GPU texture metadata through ADP.
 
@@ -13,7 +13,7 @@ await initDevtools({ app, version: '8' });
 Then connect an agent:
 
 ```ts
-import { connectPixiBrowser } from '@agent-devtools/pixi/browser';
+import { connectPixiBrowser } from '@adp-devtools/pixi/browser';
 
 const client = await connectPixiBrowser({ url: 'http://localhost:5173' });
 const scene = await client.query({ domain: 'scene-graph', resource: 'nodes' });

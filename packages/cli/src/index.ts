@@ -1,12 +1,12 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { connectAngularBrowser, createSignalFormMigrationPlan, generateSignalFormAssertions } from '@agent-devtools/angular/browser';
-import { pixiBrowserAdapterScript } from '@agent-devtools/pixi/browser';
-import type { PixiAssetsSnapshot, PixiRenderingSnapshot, PixiSceneGraphSnapshot } from '@agent-devtools/pixi';
-import type { AgentDevToolsClient } from '@agent-devtools/core';
-import { diffSnapshots, ProtocolRequestError } from '@agent-devtools/core';
-import type { FormControlSnapshot, RuntimeRef, SerializedValue, Snapshot, StandardDomainData, StructuredQuery } from '@agent-devtools/protocol';
+import { connectAngularBrowser, createSignalFormMigrationPlan, generateSignalFormAssertions } from '@adp-devtools/angular/browser';
+import { pixiBrowserAdapterScript } from '@adp-devtools/pixi/browser';
+import type { PixiAssetsSnapshot, PixiRenderingSnapshot, PixiSceneGraphSnapshot } from '@adp-devtools/pixi';
+import type { AgentDevToolsClient } from '@adp-devtools/core';
+import { diffSnapshots, ProtocolRequestError } from '@adp-devtools/core';
+import type { FormControlSnapshot, RuntimeRef, SerializedValue, Snapshot, StandardDomainData, StructuredQuery } from '@adp-devtools/protocol';
 import { createHelpDocument, renderHelp, resolveContextualHelpPath } from './help.js';
 import { closeSession, loadSession, openSession, saveSession } from './session.js';
 

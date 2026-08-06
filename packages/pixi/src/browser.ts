@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { connectBrowser, type BrowserConnectOptions } from '@agent-devtools/browser';
+import { connectBrowser, type BrowserConnectOptions } from '@adp-devtools/browser';
 
 export const pixiBrowserAdapterScript = async (): Promise<string> => readFile(fileURLToPath(new URL('./page/page-entry.global.js', import.meta.url)), 'utf8');
 

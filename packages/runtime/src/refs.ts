@@ -1,4 +1,4 @@
-import type { DomainId, RuntimeKind, RuntimeRef } from '@agent-devtools/protocol';
+import type { DomainId, RuntimeKind, RuntimeRef } from '@adp-devtools/protocol';
 
 export class ReferenceRegistry {
   private readonly refs = new WeakMap<object, Map<RuntimeKind, RuntimeRef>>();

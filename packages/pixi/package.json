@@ -1,5 +1,5 @@
 {
-  "name": "@agent-devtools/pixi",
+  "name": "@adp-devtools/pixi",
   "version": "0.1.0",
   "description": "PixiJS runtime adapter and browser composition for Agent DevTools",
   "type": "module",
@@ -10,7 +10,7 @@
     "./browser": { "types": "./dist/browser.d.ts", "import": "./dist/browser.js" },
     "./browser-script": "./dist/page/page-entry.global.js"
   },
-  "files": ["dist"],
+  "files": ["dist", "CHANGELOG.md"],
   "scripts": {
     "prepack": "pnpm build",
     "build": "tsup src/index.ts src/runtime.ts src/browser.ts --format esm --dts --clean && tsup src/page-entry.ts --format iife --global-name AgentDevToolsPixi --out-dir dist/page --minify",
@@ -18,12 +18,16 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@agent-devtools/browser": "workspace:^",
-    "@agent-devtools/protocol": "workspace:^",
-    "@agent-devtools/runtime": "workspace:^"
+    "@adp-devtools/browser": "workspace:^",
+    "@adp-devtools/protocol": "workspace:^",
+    "@adp-devtools/runtime": "workspace:^"
   },
   "peerDependencies": { "pixi.js": ">=8 <9" },
   "peerDependenciesMeta": { "pixi.js": { "optional": true } },
   "devDependencies": { "pixi.js": "^8.14.3", "tsup": "^8.5.0", "typescript": "catalog:" },
+  "repository": { "type": "git", "url": "git+https://github.com/RSamaium/agent-devtools.git", "directory": "packages/pixi" },
+  "homepage": "https://github.com/RSamaium/agent-devtools#readme",
+  "bugs": "https://github.com/RSamaium/agent-devtools/issues",
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" },
   "license": "MIT"
 }

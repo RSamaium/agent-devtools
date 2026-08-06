@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
-import type { RouteSnapshot, SerializedValue, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
+import type { RouteSnapshot, SerializedValue, StandardCaptureSnapshot } from '@adp-devtools/protocol';
 interface RouteConfigLike { path?: string; outlet?: string; component?: object; loadChildren?: unknown; loadComponent?: unknown; children?: RouteConfigLike[]; data?: Record<string, unknown> }
 interface RouterLike { url?: string; config?: RouteConfigLike[]; navigated?: boolean; currentNavigation?: unknown }
 interface DebugApi { getDirectives?(element: Element): object[]; getComponent?(element: Element): object | null }

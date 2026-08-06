@@ -1,5 +1,5 @@
-import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@agent-devtools/runtime';
-import type { InjectorSnapshot, StandardCaptureSnapshot } from '@agent-devtools/protocol';
+import { getInstrumentation, serialize, type CaptureAdapter, type RuntimeContext } from '@adp-devtools/runtime';
+import type { InjectorSnapshot, StandardCaptureSnapshot } from '@adp-devtools/protocol';
 
 interface ProviderRecord { token: unknown; provider: unknown; isViewProvider?: boolean }
 interface InjectorMetadata { type: 'element' | 'environment' | 'null'; source: unknown }

@@ -1,10 +1,10 @@
 import type {
   AdapterCapture, RuntimeAdapter, RuntimeContext,
-} from '@agent-devtools/runtime';
-import { serialize } from '@agent-devtools/runtime';
+} from '@adp-devtools/runtime';
+import { serialize } from '@adp-devtools/runtime';
 import type {
   AdapterDescriptor, Explanation, RuntimeRef, Truncation,
-} from '@agent-devtools/protocol';
+} from '@adp-devtools/protocol';
 import type {
   PixiAssetsSnapshot, PixiPointSnapshot, PixiRenderingSnapshot,
   PixiSceneGraphSnapshot, PixiSceneNodeSnapshot, PixiTextureSnapshot,

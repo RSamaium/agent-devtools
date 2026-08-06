@@ -2,17 +2,17 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
-import { connectAngularBrowser } from '@agent-devtools/angular/browser';
-import { pixiBrowserAdapterScript } from '@agent-devtools/pixi/browser';
-import type { PixiAssetsSnapshot, PixiRenderingSnapshot } from '@agent-devtools/pixi';
-import { diffSnapshots, type AgentDevToolsClient } from '@agent-devtools/core';
-import type { SerializationBudget, Snapshot, StandardDomainData } from '@agent-devtools/protocol';
+import { connectAngularBrowser } from '@adp-devtools/angular/browser';
+import { pixiBrowserAdapterScript } from '@adp-devtools/pixi/browser';
+import type { PixiAssetsSnapshot, PixiRenderingSnapshot } from '@adp-devtools/pixi';
+import { diffSnapshots, type AgentDevToolsClient } from '@adp-devtools/core';
+import type { SerializationBudget, Snapshot, StandardDomainData } from '@adp-devtools/protocol';
 
 export interface McpServerOptions { cdpUrl: string; timeoutMs?: number }
 const text = (value: unknown): CallToolResult => ({ content: [{ type: 'text', text: JSON.stringify(value) }] });
 
 export function createAgentDevToolsMcpServer(options: McpServerOptions): McpServer {
-  const server = new McpServer({ name: '@agent-devtools/mcp', version: '0.1.0' });
+  const server = new McpServer({ name: '@adp-devtools/mcp', version: '0.1.0' });
   let clientPromise: Promise<AgentDevToolsClient> | undefined;
   const client = () => clientPromise ??= pixiBrowserAdapterScript().then(adapterScript => connectAngularBrowser({ cdpUrl: options.cdpUrl, adapterScripts: [adapterScript], ...(options.timeoutMs === undefined ? {} : { timeoutMs: options.timeoutMs }) }));
   const register = <T extends z.ZodRawShape>(name: string, description: string, shape: T, handler: (params: z.infer<z.ZodObject<T>>, client: AgentDevToolsClient) => Promise<unknown>) => {
@@ -46,7 +46,7 @@ export function createAgentDevToolsMcpServer(options: McpServerOptions): McpServ
     const snapshot = await c.snapshot(); const di = domainData(snapshot, 'dependency-injection'); const components = domainData(snapshot, 'components').components;
     const source = [...di.injectors, ...components].find(item => item.ref.id === p.from)?.ref;
     if (!source) throw new Error(`Runtime reference not found: ${p.from}`);
-    return c.execute('dependency-injection', 'resolve', { token: p.token, from: source as unknown as import('@agent-devtools/protocol').SerializedValue });
+    return c.execute('dependency-injection', 'resolve', { token: p.token, from: source as unknown as import('@adp-devtools/protocol').SerializedValue });
   });
   register('angular_signals', 'List Angular Signals.', pagination, snapshotResource('state', 'signals'));
   register('angular_forms', 'List classic Angular forms.', pagination, snapshotResource('forms', 'forms'));

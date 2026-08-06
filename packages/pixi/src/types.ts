@@ -1,4 +1,4 @@
-import type { DiscoveryLevel, RuntimeRef } from '@agent-devtools/protocol';
+import type { DiscoveryLevel, RuntimeRef } from '@adp-devtools/protocol';
 
 export interface PixiPointSnapshot { x: number; y: number }
 

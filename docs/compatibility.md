@@ -2,7 +2,7 @@
 
 | Surface | V1 support |
 |---|---|
-| Node.js | Active LTS lines, minimum 20.19 |
+| Node.js | Active LTS lines, minimum 22.14 |
 | Angular | 20–22 development builds (the currently maintained majors) |
 | PixiJS | 8.x, preferably registered through `@pixi/devtools` |
 | Signal Forms | Angular 21–22 |

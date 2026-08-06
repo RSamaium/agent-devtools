@@ -1,5 +1,5 @@
-import { FunctionTransport, AgentDevToolsClient } from '@agent-devtools/core';
-import type { DomainId, RpcRequest, RpcResponse, RuntimeKind, RuntimeRef, Snapshot } from '@agent-devtools/protocol';
+import { FunctionTransport, AgentDevToolsClient } from '@adp-devtools/core';
+import type { DomainId, RpcRequest, RpcResponse, RuntimeKind, RuntimeRef, Snapshot } from '@adp-devtools/protocol';
 
 export const createEmptySnapshot = (overrides: Partial<Snapshot> = {}): Snapshot => ({
   id: 'snapshot-1', generation: 1,
